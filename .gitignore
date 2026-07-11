@@ -1,0 +1,30 @@
+# Compiled binaries and object files
+build/
+*.o
+*.out
+*.exe
+
+# IDE and Editor configs
+.vscode/ipch/
+.vscode/browse.vc.db
+.vscode/config_default.json
+.vscode/*.log
+.vscode/*.exe
+.vscode/c_cpp_properties.json
+# Allow sharing VS Code build configuration if needed, but let's keep user config separate or comment this out.
+# For now, we will create default tasks.json/launch.json, so let's not ignore them, but ignore .vscode/ local state.
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# Temporary files and logs
+*.log
+*.tmp
+*.dat
+*.TXT
+*.txt
+# Do not ignore lab outline txt and reports
+!docs/*.pdf
+
+# System files
+.DS_Store
+Thumbs.db

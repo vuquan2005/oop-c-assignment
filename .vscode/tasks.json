@@ -1,0 +1,45 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "C/C++: Build Active File with Makefile",
+            "command": "make",
+            "args": [
+                "build",
+                "FILE=${relativeFile}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Biên dịch file C++ hiện tại bằng Makefile của project."
+        },
+        {
+            "type": "shell",
+            "label": "C/C++: Run Active File",
+            "command": "make",
+            "args": [
+                "run",
+                "FILE=${relativeFile}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "detail": "Biên dịch và chạy file C++ hiện tại trên terminal."
+        }
+    ]
+}
