@@ -122,7 +122,7 @@ for ((i=1; i<=QUANTITY; i++)); do
  * @author ${AUTHOR}
  * @date $(date +%d-%m-%Y)
  *
- * @status todo
+ * @status done
  */
 
 #include <iostream>

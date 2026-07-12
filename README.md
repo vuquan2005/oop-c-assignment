@@ -2,6 +2,8 @@
 
 Repository lưu trữ toàn bộ mã nguồn bài tập, bài thực hành của môn học **Lập trình hướng đối tượng (OOP C++)**.
 
+Tiến độ [`TODO.md`](./TODO.md)
+
 ---
 
 ## 🛠️ Cài đặt môi trường
@@ -128,7 +130,7 @@ make new FOLDER=buoi6 NUM=5 AUTHOR="Tên_Của_Bạn"
 
 ### 2. Đồng bộ tiến độ làm bài
 
-Khi bạn cập nhật tag `@status done` hoặc `@status todo` trong phần comment ở đầu mỗi file bài tập, bạn có thể đồng bộ trạng thái này vào file `TODO.md` ở gốc repo và các file `README.md` trong từng thư mục con bằng lệnh:
+Khi bạn cập nhật tag `@status done` hoặc `@status done` trong phần comment ở đầu mỗi file bài tập, bạn có thể đồng bộ trạng thái này vào file `TODO.md` ở gốc repo và các file `README.md` trong từng thư mục con bằng lệnh:
 
 ```bash
 make sync

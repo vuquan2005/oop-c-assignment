@@ -1,15 +1,17 @@
 # 📅 Bài tập buổi 2
 
+Đề bài tại [BÀI TẬP BUỔI 2.pdf](./docs/BÀI TẬP BUỔI 2.pdf)
+
 <!-- Auto generated -->
 
-- [ ] [buoi2_1.cpp](./src/buoi2/buoi2_1.cpp) Ô tô <details>
+- [x] [buoi2_1.cpp](./src/buoi2/buoi2_1.cpp) Ô tô <details>
     <summary>📅 12-07-2026</summary>
     <blockquote>
     👤 VuQuan
     </blockquote>
 </details>
 
-- [ ] [buoi2_2.cpp](./src/buoi2/buoi2_2.cpp) Phiếu mua hàng <details>
+- [x] [buoi2_2.cpp](./src/buoi2/buoi2_2.cpp) Phiếu mua hàng <details>
     <summary>📅 12-07-2026</summary>
     <blockquote>
     👤 VuQuan
