@@ -4,19 +4,19 @@ Hãy đánh dấu `[x]` thay vì `[ ]` khi bạn đã hoàn thành bài tập đ
 
 ### 📅 Bài tập Buổi 1
 
-[ ] [bai1.cpp](./src/buoi1/bai1.cpp) Tính diện tích hình thang
+[x] [bai1.cpp](./src/buoi1/bai1.cpp) Tính diện tích hình thang
 
-[ ] [bai2.cpp](./src/buoi1/bai2.cpp) Tính chu vi, diện tích hình tròn
+[x] [bai2.cpp](./src/buoi1/bai2.cpp) Tính chu vi, diện tích hình tròn
 
-[ ] [bai3.cpp](./src/buoi1/bai3.cpp) Giải phương trình bậc nhất một ẩn
+[x] [bai3.cpp](./src/buoi1/bai3.cpp) Giải phương trình bậc nhất một ẩn
 
-[ ] [bai4.cpp](./src/buoi1/bai4.cpp) Giải phương trình bậc hai
+[x] [bai4.cpp](./src/buoi1/bai4.cpp) Giải phương trình bậc hai
 
-[ ] [bai5.cpp](./src/buoi1/bai5.cpp) Tính chu vi, diện tích tam giác
+[x] [bai5.cpp](./src/buoi1/bai5.cpp) Tính chu vi, diện tích tam giác
 
-[ ] [bai6.cpp](./src/buoi1/bai6.cpp) Nhập và hiển thị học sinh
+[x] [bai6.cpp](./src/buoi1/bai6.cpp) Nhập và hiển thị học sinh
 
-[ ] [bai7.cpp](./src/buoi1/bai7.cpp) Lớp CanBo tính lương
+[x] [bai7.cpp](./src/buoi1/bai7.cpp) Lớp CanBo tính lương
 
 ### 🏫 Bài thực hành số 1 (Lớp đơn giản)
 
