@@ -4,7 +4,7 @@ Hãy đánh dấu `[x]` thay vì `[ ]` khi bạn đã hoàn thành bài tập đ
 
 <!-- Auto generated -->
 
-### 📅 Bài tập Buổi 1
+### 📅 Bài tập [Buổi 1](./src/buoi1)
 
 - [x] [buoi1_1.cpp](./src/buoi1/buoi1_1.cpp) Tính diện tích hình thang <details>
     <summary>📅 12-07-2026</summary>
@@ -55,7 +55,7 @@ Hãy đánh dấu `[x]` thay vì `[ ]` khi bạn đã hoàn thành bài tập đ
     </blockquote>
 </details>
 
-### 📅 Bài tập Buổi 2
+### 📅 Bài tập [Buổi 2](./src/buoi2)
 
 - [x] [buoi2_1.cpp](./src/buoi2/buoi2_1.cpp) Ô tô <details>
     <summary>📅 12-07-2026</summary>

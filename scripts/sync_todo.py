@@ -103,6 +103,12 @@ def format_item(info, relative_path):
     item += f"</details>"
     return item
 
+def markdown_relative_path(from_dir, target_path):
+    relative_path = os.path.relpath(target_path, from_dir)
+    if not relative_path.startswith('.'):
+        relative_path = f"./{relative_path}"
+    return relative_path.replace(os.sep, '/')
+
 def replace_auto_generated_block(file_content, new_content):
     marker = "<!-- Auto generated -->"
     parts = file_content.split(marker)
@@ -159,14 +165,17 @@ def main():
                 'status': parsed.get('status') or 'todo'
             }
 
-            relative_path = f"./src/{folder_name}/{cpp_file}"
-            item_md = format_item(info, relative_path)
-            folder_items.append(item_md)
+            readme_relative_path = markdown_relative_path(folder_path, file_path)
+            todo_relative_path = markdown_relative_path(project_root, file_path)
+            folder_items.append((info, readme_relative_path, todo_relative_path))
+
+        readme_items = [format_item(info, relative_path) for info, relative_path, _ in folder_items]
+        todo_items = [format_item(info, relative_path) for info, _, relative_path in folder_items]
 
         # 2. Cập nhật hoặc tạo README.md của thư mục con
         readme_path = os.path.join(folder_path, 'README.md')
         display_name = format_folder_name(folder_name)
-        folder_new_content = "\n\n".join(folder_items)
+        folder_new_content = "\n\n".join(readme_items)
 
         if os.path.exists(readme_path):
             with open(readme_path, 'r', encoding='utf-8') as r:
@@ -183,7 +192,8 @@ def main():
             print(f"Đã tạo mới và ghi dữ liệu: {readme_path}")
 
         # 3. Chuẩn bị phần nội dung cho TODO.md
-        section_md = f"### 📅 Bài tập {display_name}\n\n" + "\n\n".join(folder_items)
+        folder_link = markdown_relative_path(project_root, folder_path)
+        section_md = f"### 📅 Bài tập [{display_name}]({folder_link})\n\n" + "\n\n".join(todo_items)
         todo_sections.append(section_md)
 
     # 4. Cập nhật TODO.md
