@@ -4,19 +4,27 @@ Hãy đánh dấu `[x]` thay vì `[ ]` khi bạn đã hoàn thành bài tập đ
 
 ### 📅 Bài tập Buổi 1
 
-- [x] [bai1.cpp](./src/buoi1/bai1.cpp) Tính diện tích hình thang
+- [x] [buoi1_1.cpp](./src/buoi1/buoi1_1.cpp) Tính diện tích hình thang
 
-- [x] [bai2.cpp](./src/buoi1/bai2.cpp) Tính chu vi, diện tích hình tròn
+- [x] [buoi1_2.cpp](./src/buoi1/buoi1_2.cpp) Tính chu vi, diện tích hình tròn
 
-- [x] [bai3.cpp](./src/buoi1/bai3.cpp) Giải phương trình bậc nhất một ẩn
+- [x] [buoi1_3.cpp](./src/buoi1/buoi1_3.cpp) Giải phương trình bậc nhất một ẩn
 
-- [x] [bai4.cpp](./src/buoi1/bai4.cpp) Giải phương trình bậc hai
+- [x] [buoi1_4.cpp](./src/buoi1/buoi1_4.cpp) Giải phương trình bậc hai
 
-- [x] [bai5.cpp](./src/buoi1/bai5.cpp) Tính chu vi, diện tích tam giác
+- [x] [buoi1_5.cpp](./src/buoi1/buoi1_5.cpp) Tính chu vi, diện tích tam giác
 
-- [x] [bai6.cpp](./src/buoi1/bai6.cpp) Nhập và hiển thị học sinh
+- [x] [buoi1_6.cpp](./src/buoi1/buoi1_6.cpp) Nhập và hiển thị học sinh
 
-- [x] [bai7.cpp](./src/buoi1/bai7.cpp) Lớp CanBo tính lương
+- [x] [buoi1_7.cpp](./src/buoi1/buoi1_7.cpp) Lớp CanBo tính lương
+
+### Bài tập buổi 2
+
+- [x] [buoi2_1.cpp](./src/buoi2/buoi2_1.cpp) Ô tô
+
+- [x] [buoi2_2.cpp](./src/buoi2/buoi2_2.cpp) Phiếu mua hàng
+
+- [x] [buoi2_3.cpp](./src/buoi2/buoi2_3.cpp) Cũng là phiếu mua hàng nhưng nhiều thông tin hơn :v
 
 ### 🏫 Bài thực hành số 1 (Lớp đơn giản)
 
