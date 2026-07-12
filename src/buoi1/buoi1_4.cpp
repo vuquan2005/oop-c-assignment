@@ -1,7 +1,12 @@
 /**
- * @file Giải phương trình bậc 2
- * @brief Viết chương trình hướng đối tượng giải quyết bài toán giải phương
- * trình bậc 2.
+ * @file buoi1_4.cpp
+ * @brief Giải phương trình bậc 2
+ * @note
+ *
+ * @author VuQuan
+ * @date 12-07-2026
+ *
+ * @status todo
  */
 
 #include <cmath>

@@ -1,6 +1,12 @@
 /**
  * @file buoi2_2.cpp
- * @brief Bài tập số 2 - Bài: buoi2
+ * @brief Phiếu mua hàng
+ * @note
+ *
+ * @author VuQuan
+ * @date 12-07-2026
+ *
+ * @status todo
  */
 
 #include <iomanip>

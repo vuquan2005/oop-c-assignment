@@ -1,8 +1,12 @@
 /**
- * @file Học sinh
- * @brief Viết chương trình hướng đối tượng giải quyết bài toán, nhập và hiển
- * thị thông tin của một học sinh gồm: Họ tên, ngày, tháng, năm sinh, giới tính,
- * điểm trung bình, xếp loại đạo đức.
+ * @file buoi1_6.cpp
+ * @brief Học sinh
+ * @note
+ *
+ * @author VuQuan
+ * @date 12-07-2026
+ *
+ * @status todo
  */
 
 #include <iostream>

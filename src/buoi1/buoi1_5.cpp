@@ -1,7 +1,12 @@
 /**
- * @file Tính chu vi, diện tích tam giác
- * @brief Viết chương trình hướng đối tượng giải quyết bài toán tính chu vi và
- * diện tích của một tam giác.
+ * @file buoi1_5.cpp
+ * @brief Tính chu vi, diện tích tam giác
+ * @note
+ *
+ * @author VuQuan
+ * @date 12-07-2026
+ *
+ * @status todo
  */
 
 #include <cmath>

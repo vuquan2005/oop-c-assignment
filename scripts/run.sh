@@ -3,10 +3,10 @@
 # Helper script to run C++ OOP assignment files
 # Usage: ./scripts/run.sh <file_path_or_name>
 # Examples:
-#   ./scripts/run.sh src/buoi1/bai1.cpp
-#   ./scripts/run.sh buoi1/bai1.cpp
-#   ./scripts/run.sh bai1.cpp
-#   ./scripts/run.sh bai1
+#   ./scripts/run.sh src/buoi1/buoi1_1.cpp
+#   ./scripts/run.sh buoi1/buoi1_1.cpp
+#   ./scripts/run.sh buoi1_1.cpp
+#   ./scripts/run.sh buoi1_1
 
 set -e
 
@@ -20,9 +20,9 @@ TARGET_FILE="$1"
 if [ -z "$TARGET_FILE" ]; then
     echo -e "${RED}Lỗi: Vui lòng cung cấp tên file hoặc đường dẫn cần chạy.${NC}"
     echo -e "Ví dụ:"
-    echo -e "  ./scripts/run.sh src/buoi1/bai1.cpp"
-    echo -e "  ./scripts/run.sh buoi1/bai1.cpp"
-    echo -e "  ./scripts/run.sh bai1"
+    echo -e "  ./scripts/run.sh src/buoi1/buoi1_1.cpp"
+    echo -e "  ./scripts/run.sh buoi1/buoi1_1.cpp"
+    echo -e "  ./scripts/run.sh buoi1_1"
     exit 1
 fi
 

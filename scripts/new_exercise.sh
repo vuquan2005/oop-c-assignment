@@ -61,6 +61,11 @@ if ! [[ "$QUANTITY" =~ ^[0-9]+$ ]] || [ "$QUANTITY" -le 0 ]; then
     exit 1
 fi
 
+# Get Author Name (from environment, git config, or default)
+if [ -z "$AUTHOR" ]; then
+    AUTHOR=$(git config user.name 2>/dev/null || echo "<Name>")
+fi
+
 # 3. Create folder and files
 TARGET_DIR="$BASE_DIR/$FOLDER_NAME"
 mkdir -p "$TARGET_DIR"
@@ -70,6 +75,33 @@ echo -e "Đang khởi tạo $QUANTITY bài tập..."
 
 CREATED_COUNT=0
 SKIPPED_COUNT=0
+
+# Create README.md
+README_PATH="$TARGET_DIR/README.md"
+if [ ! -f "$README_PATH" ]; then
+    DISPLAY_NAME="$FOLDER_NAME"
+    if [[ "$FOLDER_NAME" =~ ^buoi([0-9]+)$ ]]; then
+        DISPLAY_NAME="buổi ${BASH_REMATCH[1]}"
+    elif [[ "$FOLDER_NAME" =~ ^Buoi([0-9]+)$ ]]; then
+        DISPLAY_NAME="buổi ${BASH_REMATCH[1]}"
+    elif [[ "$FOLDER_NAME" =~ ^lab([0-9]+)$ ]]; then
+        DISPLAY_NAME="thực hành ${BASH_REMATCH[1]}"
+    elif [[ "$FOLDER_NAME" =~ ^Lab([0-9]+)$ ]]; then
+        DISPLAY_NAME="thực hành ${BASH_REMATCH[1]}"
+    else
+        DISPLAY_NAME="$(echo "${FOLDER_NAME:0:1}" | tr '[:lower:]' '[:upper:]')${FOLDER_NAME:1}"
+    fi
+
+    cat <<EOF > "$README_PATH"
+# 📅 Bài tập ${DISPLAY_NAME}
+
+<!-- Auto generated -->
+
+<!-- Auto generated -->
+EOF
+    README_RELATIVE=$(echo "$README_PATH" | sed "s|$(dirname "$BASE_DIR")/||")
+    echo -e "  - ${GREEN}[ĐÃ TẠO]${NC} $README_RELATIVE"
+fi
 
 for ((i=1; i<=QUANTITY; i++)); do
     FILE_NAME="${FOLDER_NAME}_${i}.cpp"
@@ -84,7 +116,13 @@ for ((i=1; i<=QUANTITY; i++)); do
         cat <<EOF > "$FILE_PATH"
 /**
  * @file ${FILE_NAME}
- * @brief Bài tập số ${i} - Bài: ${FOLDER_NAME}
+ * @brief [Mô tả ngắn gọn]
+ * @note [Ghi chú]
+ *
+ * @author ${AUTHOR}
+ * @date $(date +%d-%m-%Y)
+ *
+ * @status todo
  */
 
 #include <iostream>
@@ -106,5 +144,3 @@ done
 # 4. Show results
 echo -e "\n${GREEN}=== HOÀN THÀNH ===${NC}"
 echo -e "Thành công: Đã tạo ${GREEN}$CREATED_COUNT${NC} file mới, bỏ qua ${YELLOW}$SKIPPED_COUNT${NC} file đã có."
-echo -e "Để chạy nhanh một file vừa tạo, sử dụng lệnh:"
-echo -e "  ${BLUE}./scripts/run.sh ${FOLDER_NAME}_1.cpp${NC}\n"

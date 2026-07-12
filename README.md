@@ -1,6 +1,6 @@
 # 📚 BÀI TẬP LẬP TRÌNH HƯỚNG ĐỐI TƯỢNG (OOP C++)
 
-Repository lưu trữ toàn bộ mã nguồn bài tập lớn, bài thực hành và phiếu giao bài tập của môn học **Lập trình hướng đối tượng (OOP C++)**.
+Repository lưu trữ toàn bộ mã nguồn bài tập, bài thực hành của môn học **Lập trình hướng đối tượng (OOP C++)**.
 
 ---
 
@@ -8,9 +8,15 @@ Repository lưu trữ toàn bộ mã nguồn bài tập lớn, bài thực hành
 
 Để biên dịch và chạy code C++, máy tính của bạn cần có trình biên dịch `g++` và công cụ `make`.
 
-### 1. Sử dụng script cài đặt tự động (Linux/macOS)
+### 1. Sử dụng Makefile hoặc Script cài đặt tự động (Linux/macOS)
 
-Chạy script để tự động cài đặt các công cụ cần thiết:
+Nên sử dụng lệnh `make` để vừa cài đặt môi trường vừa cấu hình Git hooks tự động:
+
+```bash
+make setup
+```
+
+Hoặc chạy trực tiếp script:
 
 ```bash
 ./scripts/setup_env.sh
@@ -45,7 +51,7 @@ oop-c-assignment/
 ├── docs/                     # Tài liệu môn học, đề bài PDF/TXT
 │   ├── BÀI THỰC HÀNH LTHĐT HKH.pdf
 │   ├── BÀI TẬP BUỔI 1.pdf
-│   └── BÀI TẬP BUỔI 1.pdf
+│   └── BÀI TẬP BUỔI 2.pdf
 ├── src/                      # Mã nguồn bài làm
 │   ├── buoi1/                # Bài tập Buổi 1 (7 bài)
 │   ├── lab1/ ... / lab5/     # Bài thực hành số 1 đến 5
@@ -64,45 +70,81 @@ oop-c-assignment/
 
 ## 🚀 Cách chạy và biên dịch chương trình
 
-### 1. Sử dụng script run nhanh (`scripts/run.sh`)
+Repository sử dụng `Makefile` để đơn giản hóa quá trình biên dịch và chạy các file mã nguồn C++.
 
-Script sẽ tự động tìm kiếm đường dẫn chính xác và biên dịch/chạy thử:
+### 1. Biên dịch và chạy chương trình
+
+Để chạy một bài tập (ví dụ: `src/buoi1/buoi1_1.cpp`), sử dụng lệnh:
 
 ```bash
-# Chạy bằng đường dẫn tương đối hoặc chỉ cần tên file
-./scripts/run.sh src/buoi1/bai1.cpp
-./scripts/run.sh buoi1/bai1.cpp
-./scripts/run.sh bai1.cpp
-./scripts/run.sh bai1     # Tìm kiếm mờ (hiển thị danh sách nếu trùng)
+make run FILE=src/buoi1/buoi1_1.cpp
 ```
 
-### 2. Sử dụng Makefile
+Hoặc sử dụng script tìm kiếm nhanh:
 
-- **Biên dịch và chạy ngay lập tức**: `make run FILE=src/buoi1/bai1.cpp`
-- **Chỉ biên dịch (không chạy)**: `make build FILE=src/buoi1/bai1.cpp`
-- **Dọn dẹp thư mục build & file rác**: `make clean`
+```bash
+./scripts/run.sh buoi1_1
+```
 
-### 3. Sử dụng VS Code
+Script `run.sh` sẽ tự động tìm kiếm file có tên khớp trong thư mục `src/` và biên dịch bằng `make`.
 
-- **Chạy thử (Run)**: Chọn lệnh `Tasks: Run Test Task` từ Command Palette.
-- **Debug bài tập**: Mở file `.cpp` muốn debug, nhấn **`F5`** để biên dịch debug và chạy `gdb` trực quan.
+### 2. Chỉ biên dịch (Không chạy)
+
+Nếu bạn chỉ muốn kiểm tra lỗi cú pháp và biên dịch file:
+
+```bash
+make build FILE=src/buoi1/buoi1_1.cpp
+```
+
+File thực thi sau khi biên dịch sẽ nằm trong thư mục `build/`.
+
+### 3. Dọn dẹp thư mục build
+
+Để xóa toàn bộ các file thực thi đã biên dịch và các file tạm khác:
+
+```bash
+make clean
+```
 
 ---
 
-## ➕ Tự động khởi tạo bài tập mới (`scripts/new_exercise.sh`)
+## 📂 Quản lý bài tập và Tiến độ làm bài
 
-Script này giúp bạn tạo nhanh một thư mục học tập mới cùng các file code `.cpp` mẫu được đánh chỉ số tự động.
+### 1. Tạo thư mục bài tập mới
 
-### Cách sử dụng:
+Bạn có thể tự động tạo thư mục và các file stub bài tập mới bằng lệnh:
 
-1. **Chạy tương tác**:
-   ```bash
-   ./scripts/new_exercise.sh
-   ```
-   Hệ thống sẽ hỏi bạn tên thư mục (ví dụ: `buoi6`) và số lượng bài tập (ví dụ: `5`).
-2. **Chạy nhanh bằng tham số**:
-   ```bash
-   ./scripts/new_exercise.sh <tên_thư_mục> <số_lượng_bài>
-   # Ví dụ: Tạo thư mục buoi6 chứa buoi6_1.cpp đến buoi6_5.cpp
-   ./scripts/new_exercise.sh buoi6 5
-   ```
+```bash
+make new
+```
+
+_(Lệnh này gọi trực tiếp script `./scripts/new_exercise.sh` không có tham số và chạy ở chế độ tương tác)_
+
+Hoặc nếu muốn truyền tham số nhanh từ command line:
+
+```bash
+make new FOLDER=buoi6 NUM=5 AUTHOR="Tên_Của_Bạn"
+```
+
+### 2. Đồng bộ tiến độ làm bài
+
+Khi bạn cập nhật tag `@status done` hoặc `@status todo` trong phần comment ở đầu mỗi file bài tập, bạn có thể đồng bộ trạng thái này vào file `TODO.md` ở gốc repo và các file `README.md` trong từng thư mục con bằng lệnh:
+
+```bash
+make sync
+```
+
+_(Lệnh này gọi trực tiếp `./scripts/sync_todo.py` không có tham số để quét và cập nhật toàn bộ trạng thái bài tập)_
+
+---
+
+## ⚓ Git Hooks & Tự động hóa
+
+Repository này được tích hợp sẵn Git hooks để tự động hóa các tác vụ trước khi commit:
+
+- Hook **pre-commit** (`.githooks/pre-commit`) được cấu hình để tự động chạy `./scripts/sync_todo.py` mỗi khi bạn thực hiện commit.
+- Nếu việc đồng bộ thành công, trạng thái bài tập trong `TODO.md` và `src/*/README.md` sẽ được cập nhật tự động và thêm vào commit hiện tại.
+- Để kích hoạt Git hooks này, hãy chạy lệnh thiết lập môi trường:
+  ```bash
+  make setup
+  ```

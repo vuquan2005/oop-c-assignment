@@ -1,7 +1,12 @@
 /**
- * @file Tính chu vi, diện tích hình tròn
- * @brief Viết chương trình hướng đối tượng giải quyết bài toán tính chu vi,
- * diện tích hình tròn.
+ * @file buoi1_2.cpp
+ * @brief Tính chu vi, diện tích hình tròn
+ * @note
+ *
+ * @author VuQuan
+ * @date 12-07-2026
+ *
+ * @status todo
  */
 
 #include <cmath>

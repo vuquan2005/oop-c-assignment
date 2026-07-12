@@ -1,7 +1,12 @@
 /**
- * @file Tính diện tích hình thang
- * @brief Viết chương trình hướng đối tượng giải quyết bài toán tính diện tích
- * hình thang.
+ * @file buoi1_1.cpp
+ * @brief Tính diện tích hình thang
+ * @note
+ *
+ * @author VuQuan
+ * @date 12-07-2026
+ *
+ * @status todo
  */
 
 #include <iostream>

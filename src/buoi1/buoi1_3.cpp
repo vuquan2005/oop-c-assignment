@@ -1,7 +1,12 @@
 /**
- * @file Giải phương trình bậc nhất một ẩn
- * @brief Viết chương trình hướng đối tượng giải quyết bài toán giải phương
- * trình bậc nhất một ẩn.
+ * @file buoi1_3.cpp
+ * @brief Giải phương trình bậc nhất một ẩn
+ * @note
+ *
+ * @author VuQuan
+ * @date 12-07-2026
+ *
+ * @status todo
  */
 
 #include <iostream>

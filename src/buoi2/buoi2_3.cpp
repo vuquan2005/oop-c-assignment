@@ -1,6 +1,16 @@
 /**
  * @file buoi2_3.cpp
- * @brief Bài tập số 3 - Bài: buoi2
+ * @brief Quản lý Phiếu mua hàng
+ * @note
+ * Đề bài yêu cầu:
+ * - Tạo các lớp: HangHoa, ChiTietDonMua, Date, PhieuMuaHang.
+ * - Sử dụng hàm bạn (friend class) để truy cập thuộc tính private.
+ * - Thống kê số lượng mặt hàng có số lượng mua lớn nhất.
+ *
+ * @author VuQuan
+ * @date 12-07-2026
+ *
+ * @status done
  */
 
 #include <iomanip>

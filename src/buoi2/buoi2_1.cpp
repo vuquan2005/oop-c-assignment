@@ -1,6 +1,12 @@
 /**
  * @file buoi2_1.cpp
- * @brief Bài tập số 1 - Bài: buoi2
+ * @brief Ô tô
+ * @note
+ *
+ * @author VuQuan
+ * @date 12-07-2026
+ *
+ * @status todo
  */
 
 #include <iostream>

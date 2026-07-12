@@ -1,14 +1,12 @@
 /**
- * @file Lớp CanBo
- * @brief Cài đặt chương trình hướng đối tượng thực hiện các yêu cầu:
-- Thiết kế, cài đặt lớp CanBo bao gồm các thuộc tính: Mã cán bộ, họ và tên, ngày
-sinh, số ngày làm việc trong tháng và các phương thức:
-  + Phương thức nhap() để nhập thông tin của cán bộ.
-  + Phương thức tinhLuong(): Trả về lương của cán bộ theo công thức Lương = Số
-ngày làm việc trong tháng * 250.000.
-  + Phương thức xuat(): hiển thị thông tin của cán bộ ra màn hình.
-- Xây dựng chương trình chính nhập thông tin cho 1 cán bộ. Xuất thông tin của
-cán bộ đó ra màn hình và cho biết Lương của cán bộ đó là bao nhiêu.
+ * @file buoi1_7.cpp
+ * @brief Lớp CanBo
+ * @note
+ *
+ * @author VuQuan
+ * @date 12-07-2026
+ *
+ * @status todo
  */
 
 #include <iostream>
