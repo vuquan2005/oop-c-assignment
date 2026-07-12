@@ -2,7 +2,7 @@
 
 Repository lưu trữ toàn bộ mã nguồn bài tập lớn, bài thực hành và phiếu giao bài tập của môn học **Lập trình hướng đối tượng (OOP C++)**. Hệ thống được thiết lập sẵn cấu trúc thư mục, các công cụ biên dịch tự động (Makefile) và cấu hình chạy/debug cho VS Code để hỗ trợ quá trình làm bài và nộp bài nhanh chóng nhất.
 
-
+Tiến độ bài tập [✅TODO.md](./TODO.md)
 
 ---
 
