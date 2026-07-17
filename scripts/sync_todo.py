@@ -67,14 +67,25 @@ def parse_header_comment(file_path, file_name):
     return info
 
 def format_folder_name(folder_name):
-    # buoi1 -> Buổi 1, lab2 -> Lab 2
-    match_buoi = re.match(r'^(buoi|Buoi)(\d+)$', folder_name)
-    if match_buoi:
-        return f"Buổi {match_buoi.group(2)}"
-    match_lab = re.match(r'^(lab|Lab)(\d+)$', folder_name)
-    if match_lab:
-        return f"Lab {match_lab.group(2)}"
-    return folder_name.capitalize()
+    # buoi1 -> Buổi 1, lab2 -> Lab 2, hỗ trợ thư mục lồng nhau
+    parts = re.split(r'[/\\]', folder_name)
+    formatted_parts = []
+    for part in parts:
+        if not part:
+            continue
+        match_buoi = re.match(r'^(buoi|Buoi)(\d+)$', part)
+        if match_buoi:
+            formatted_parts.append(f"Buổi {match_buoi.group(2)}")
+            continue
+        match_lab = re.match(r'^(lab|Lab)(\d+)$', part)
+        if match_lab:
+            formatted_parts.append(f"Lab {match_lab.group(2)}")
+            continue
+        if part.isupper():
+            formatted_parts.append(part)
+        else:
+            formatted_parts.append(part.capitalize())
+    return " - ".join(formatted_parts)
 
 def format_item(info, relative_path):
     status_val = info['status'].strip().lower()
@@ -129,15 +140,15 @@ def main():
         print(f"Lỗi: Không tìm thấy thư mục src tại {src_dir}")
         sys.exit(1)
 
-    # 1. Quét các thư mục con trong src
+    # 1. Quét các thư mục con trong src (hỗ trợ cấu trúc lồng nhau)
     subdirs = []
-    for d in os.listdir(src_dir):
-        d_path = os.path.join(src_dir, d)
-        if os.path.isdir(d_path) and not d.startswith('.'):
-            # Kiểm tra xem có file .cpp nào không
-            cpp_files = [f for f in os.listdir(d_path) if f.endswith('.cpp')]
-            if cpp_files:
-                subdirs.append(d)
+    for root, dirs, files in os.walk(src_dir):
+        # Bỏ qua các thư mục ẩn (bắt đầu bằng '.')
+        dirs[:] = [d for d in dirs if not d.startswith('.')]
+        cpp_files = [f for f in files if f.endswith('.cpp')]
+        if cpp_files:
+            rel_path = os.path.relpath(root, src_dir)
+            subdirs.append(rel_path)
 
     # Sắp xếp các thư mục theo thứ tự tự nhiên
     subdirs.sort(key=natural_sort_key)
