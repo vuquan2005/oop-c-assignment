@@ -21,24 +21,7 @@ class HangHoa {
     long tienTra;
 
     friend class PhieuMuaHang;
-
-  public:
-    void nhap() {
-        cout << "Nhap ma hang > ";
-        cin >> maHang;
-        cout << "Nhap ten hang > ";
-        cin.ignore();
-        cin.getline(tenHang, 50);
-        cout << "Nhap tien tra > ";
-        cin >> tienTra;
-    }
-    void xuat() const {
-        cout << setw(10) << maHang << setw(20) << tenHang << setw(15) << tienTra
-             << endl;
-    }
-    // long getTienTra() const {
-    //     return tienTra;
-    // }
+    // Theo sơ đồ lớp, lớp này không có phương thức
 };
 
 class PhieuMuaHang {
@@ -60,7 +43,13 @@ class PhieuMuaHang {
         hangHoa = new HangHoa[n];
         for (int i = 0; i < n; i++) {
             cout << "Nhap thong tin hang hoa thu " << i + 1 << ":" << endl;
-            hangHoa[i].nhap();
+            cout << "Nhap ma hang > ";
+            cin >> hangHoa[i].maHang;
+            cout << "Nhap ten hang > ";
+            cin.ignore();
+            cin.getline(hangHoa[i].tenHang, 50);
+            cout << "Nhap tien tra > ";
+            cin >> hangHoa[i].tienTra;
         }
     }
     void xuat() const {
@@ -71,7 +60,9 @@ class PhieuMuaHang {
         cout << setw(10) << "Ma hang" << setw(20) << "Ten hang" << setw(15)
              << "Tien tra" << endl;
         for (int i = 0; i < n; i++) {
-            hangHoa[i].xuat();
+            cout << setw(10) << hangHoa[i].maHang << setw(20)
+                 << hangHoa[i].tenHang << setw(15) << hangHoa[i].tienTra
+                 << endl;
         }
     }
     int slHangGialonHon(long gia) const {
@@ -91,8 +82,11 @@ int main() {
     cout << endl;
     phieu.xuat();
 
-    cout << "So hang co tien tra lon hon 250: " << phieu.slHangGialonHon(250)
-         << endl;
+    int count = phieu.slHangGialonHon(250);
+    if (count > 0)
+        cout << "So hang co tien tra lon hon 250: " << count << endl;
+    else
+        cout << "Khong co hang hoa thoa man dieu kien!" << endl;
 
     return 0;
 }

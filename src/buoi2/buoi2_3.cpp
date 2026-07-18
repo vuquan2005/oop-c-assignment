@@ -160,7 +160,7 @@ class PhieuMuaHang {
 int main() {
     PhieuMuaHang phieu;
     phieu.nhap();
-    cout << endl;
+
     phieu.xuat();
 
     cout << "So hang co so luong mua lon nhat: " << phieu.slHangCoSLMuaLonNhat()
