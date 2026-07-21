@@ -23,7 +23,7 @@
     </blockquote>
 </details>
 
-- [ ] [buoi3_4.cpp](./buoi3_4.cpp) [Mô tả ngắn gọn] <details>
+- [x] [buoi3_4.cpp](./buoi3_4.cpp) Thông tin học sinh <details>
     <summary>📅 21-07-2026</summary>
     <blockquote>
     👤 VuQuan
