@@ -157,4 +157,34 @@ Hãy đánh dấu `[x]` thay vì `[ ]` khi bạn đã hoàn thành bài tập đ
     </blockquote>
 </details>
 
+### 📅 Bài tập [TH - Lab 2](./src/TH/lab2)
+
+- [x] [lab2_1.cpp](./src/TH/lab2/lab2_1.cpp) Nhân sự <details>
+    <summary>📅 21-07-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
+- [x] [lab2_2.cpp](./src/TH/lab2/lab2_2.cpp) Hàng <details>
+    <summary>📅 21-07-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
+- [x] [lab2_3.cpp](./src/TH/lab2/lab2_3.cpp) Phiếu-Hàng <details>
+    <summary>📅 21-07-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
+- [x] [lab2_4.cpp](./src/TH/lab2/lab2_4.cpp) Phòng máy <details>
+    <summary>📅 21-07-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
 <!-- Auto generated -->
