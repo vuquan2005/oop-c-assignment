@@ -79,6 +79,36 @@ Hãy đánh dấu `[x]` thay vì `[ ]` khi bạn đã hoàn thành bài tập đ
     </blockquote>
 </details>
 
+### 📅 Bài tập [Buổi 3](./src/buoi3)
+
+- [x] [buoi3_1.cpp](./src/buoi3/buoi3_1.cpp) Doanh nghiệp <details>
+    <summary>📅 21-07-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
+- [x] [buoi3_2.cpp](./src/buoi3/buoi3_2.cpp) Xe Hơi <details>
+    <summary>📅 21-07-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
+- [x] [buoi3_3.cpp](./src/buoi3/buoi3_3.cpp) Phiếu nhập văn phòng phẩm <details>
+    <summary>📅 21-07-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
+- [ ] [buoi3_4.cpp](./src/buoi3/buoi3_4.cpp) [Mô tả ngắn gọn] <details>
+    <summary>📅 21-07-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
 ### 📅 Bài tập [TH - Lab 1](./src/TH/lab1)
 
 - [x] [lab1_1.cpp](./src/TH/lab1/lab1_1.cpp) Sinh viên <details>
