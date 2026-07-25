@@ -4,6 +4,10 @@ build/
 *.out
 *.exe
 
+# Allow test input/output files
+!tests/**/*.in
+!tests/**/*.out
+
 # IDE and Editor configs
 .vscode/
 !.vscode/tasks.json

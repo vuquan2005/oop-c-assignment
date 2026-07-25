@@ -100,7 +100,26 @@ make build FILE=src/buoi1/buoi1_1.cpp
 
 File thực thi sau khi biên dịch sẽ nằm trong thư mục `build/`.
 
-### 3. Dọn dẹp thư mục build
+### 3. Kiểm thử tự động (Integration Testing)
+
+Repository hỗ trợ kiểm thử tự động Stdin/Stdout cho tất cả bài tập:
+
+- **Chạy toàn bộ bài test:**
+  ```bash
+  make test
+  ```
+- **Test một file cụ thể:**
+  ```bash
+  make test FILE=src/buoi1/buoi1_1.cpp
+  ```
+- **Chỉ kiểm tra biên dịch toàn bộ mã nguồn (Compile check):**
+  ```bash
+  make test-compile
+  ```
+
+Các file test được lưu tại thư mục `tests/<tên_thư_mục>/<tên_bài>/` dưới dạng cặp file `.in` (đầu vào) và `.out` (kết quả mong đợi).
+
+### 4. Dọn dẹp thư mục build
 
 Để xóa toàn bộ các file thực thi đã biên dịch và các file tạm khác:
 

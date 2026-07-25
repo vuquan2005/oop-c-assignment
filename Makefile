@@ -23,12 +23,16 @@ help:
 	@echo "  make setup                          - Khởi tạo môi trường lập trình & thiết lập Git hooks"
 	@echo "  make new                            - Khởi tạo thư mục và file bài tập C++ mới"
 	@echo "  make run FILE=path/to/file.cpp      - Biên dịch và chạy file C++"
+	@echo "  make test-compile                   - Biên dịch tất cả file C++ trong src/"
 	@echo "  make build FILE=path/to/file.cpp    - Chỉ biên dịch file C++ vào thư mục build"
+	@echo "  make test [FILE=path/to/file.cpp]   - Biểu diễn Integration Test (hoặc test 1 file)"
 	@echo "  make clean                          - Xóa thư mục build và các file tạm"
 	@echo "  make sync                           - Đồng bộ trạng thái bài tập sang TODO.md và README.md"
 	@echo ""
 	@echo "Ví dụ:"
 	@echo "  make run FILE=src/buoi1/buoi1_1.cpp"
+	@echo "  make test"
+	@echo "  make test FILE=src/buoi1/buoi1_1.cpp"
 
 
 # Setup environment and Git hooks
@@ -114,3 +118,20 @@ clean:
 .PHONY: sync
 sync:
 	@./scripts/sync_todo.py
+
+# Run Integration Tests
+.PHONY: test
+test:
+	@if [ -n "$(FILE)" ]; then \
+		python3 scripts/test_runner.py --file "$(FILE)"; \
+	elif [ -n "$(DIR)" ]; then \
+		python3 scripts/test_runner.py --dir "$(DIR)"; \
+	else \
+		python3 scripts/test_runner.py; \
+	fi
+
+# Check Compilation for All Files
+.PHONY: test-compile
+test-compile:
+	@python3 scripts/test_runner.py --compile-only
+
