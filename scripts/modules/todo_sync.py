@@ -1,11 +1,18 @@
-#!/usr/bin/env python3
+"""
+TODO & README Sync module for C++ OOP Assignments workspace
+"""
+
 import os
 import re
 import sys
 import html
+from pathlib import Path
+from .compiler import PROJECT_ROOT, SRC_DIR
+
 
 def natural_sort_key(s):
     return [int(text) if text.isdigit() else text.lower() for text in re.split(r'(\d+)', s)]
+
 
 def parse_header_comment(file_path, file_name):
     try:
@@ -15,7 +22,6 @@ def parse_header_comment(file_path, file_name):
         print(f"Lỗi đọc file {file_path}: {e}")
         return None
 
-    # Tìm phần comment block /* ... */ hoặc /** ... */ ở đầu file
     match = re.search(r'/\*\*(.*?)\*/', content, re.DOTALL)
     if not match:
         match = re.search(r'/\*(.*?)\*/', content, re.DOTALL)
@@ -56,7 +62,6 @@ def parse_header_comment(file_path, file_name):
             elif current_tag in ['brief', 'author', 'date', 'status'] and line:
                 info[current_tag] = (info[current_tag] + " " + line).strip()
 
-    # Dọn dẹp note
     note_lines = info['note']
     while note_lines and not note_lines[0]:
         note_lines.pop(0)
@@ -66,8 +71,8 @@ def parse_header_comment(file_path, file_name):
 
     return info
 
+
 def format_folder_name(folder_name):
-    # buoi1 -> Buổi 1, lab2 -> Lab 2, hỗ trợ thư mục lồng nhau
     parts = re.split(r'[/\\]', folder_name)
     formatted_parts = []
     for part in parts:
@@ -87,23 +92,24 @@ def format_folder_name(folder_name):
             formatted_parts.append(part.capitalize())
     return " - ".join(formatted_parts)
 
+
 def format_item(info, relative_path):
     status_val = info['status'].strip().lower()
     status_box = "x" if status_val == 'done' else " "
-    
+
     placeholders = ('<note>', '[note]', '[ghi chú]', 'ghi chú', 'note')
     filtered_notes = []
     for note in info['note']:
         note_strip = note.strip()
         if note_strip and note_strip.lower() not in placeholders:
             filtered_notes.append(html.escape(note_strip))
-            
+
     note_content = " <br> ".join(filtered_notes)
-    
+
     brief_escaped = html.escape(info['brief'])
     author_escaped = html.escape(info['author'])
     date_escaped = html.escape(info['date'])
-    
+
     item = f"- [{status_box}] [{info['file']}]({relative_path}) {brief_escaped} <details>\n"
     item += f"    <summary>📅 {date_escaped}</summary>\n"
     item += f"    <blockquote>\n"
@@ -114,43 +120,41 @@ def format_item(info, relative_path):
     item += f"</details>"
     return item
 
+
 def markdown_relative_path(from_dir, target_path):
     relative_path = os.path.relpath(target_path, from_dir)
     if not relative_path.startswith('.'):
         relative_path = f"./{relative_path}"
     return relative_path.replace(os.sep, '/')
 
+
 def replace_auto_generated_block(file_content, new_content):
     marker = "<!-- Auto generated -->"
     parts = file_content.split(marker)
     if len(parts) >= 3:
-        # Giữ phần đầu và phần cuối, thay thế phần giữa
         end_part = marker.join(parts[2:])
         return parts[0] + marker + "\n\n" + new_content.strip() + "\n\n" + marker + end_part
     else:
         print("Cảnh báo: Không tìm thấy cặp block <!-- Auto generated --> phù hợp.")
         return file_content
 
-def main():
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(script_dir)
-    src_dir = os.path.join(project_root, 'src')
+
+def sync_todo() -> bool:
+    project_root = str(PROJECT_ROOT)
+    src_dir = str(SRC_DIR)
 
     if not os.path.exists(src_dir):
         print(f"Lỗi: Không tìm thấy thư mục src tại {src_dir}")
-        sys.exit(1)
+        return False
 
-    # 1. Quét các thư mục con trong src (hỗ trợ cấu trúc lồng nhau)
     subdirs = []
     for root, dirs, files in os.walk(src_dir):
-        # Bỏ qua các thư mục ẩn (bắt đầu bằng '.')
         dirs[:] = [d for d in dirs if not d.startswith('.')]
         cpp_files = [f for f in files if f.endswith('.cpp')]
         if cpp_files:
             rel_path = os.path.relpath(root, src_dir)
             subdirs.append(rel_path)
 
-    # Sắp xếp các thư mục theo thứ tự tự nhiên
     subdirs.sort(key=natural_sort_key)
 
     todo_sections = []
@@ -166,7 +170,7 @@ def main():
             parsed = parse_header_comment(file_path, cpp_file)
             if not parsed:
                 parsed = {}
-            
+
             info = {
                 'file': parsed.get('file') or cpp_file,
                 'brief': parsed.get('brief') or '[Mô tả ngắn gọn]',
@@ -183,7 +187,6 @@ def main():
         readme_items = [format_item(info, relative_path) for info, relative_path, _ in folder_items]
         todo_items = [format_item(info, relative_path) for info, _, relative_path in folder_items]
 
-        # 2. Cập nhật hoặc tạo README.md của thư mục con
         readme_path = os.path.join(folder_path, 'README.md')
         display_name = format_folder_name(folder_name)
         folder_new_content = "\n\n".join(readme_items)
@@ -202,12 +205,10 @@ def main():
                 r.write(updated_readme)
             print(f"Đã tạo mới và ghi dữ liệu: {readme_path}")
 
-        # 3. Chuẩn bị phần nội dung cho TODO.md
         folder_link = markdown_relative_path(project_root, folder_path)
         section_md = f"### 📅 Bài tập [{display_name}]({folder_link})\n\n" + "\n\n".join(todo_items)
         todo_sections.append(section_md)
 
-    # 4. Cập nhật TODO.md
     todo_path = os.path.join(project_root, 'TODO.md')
     todo_new_content = "\n\n".join(todo_sections)
 
@@ -225,5 +226,4 @@ def main():
             t.write(updated_todo)
         print(f"Đã tạo mới và ghi dữ liệu: {todo_path}")
 
-if __name__ == '__main__':
-    main()
+    return True

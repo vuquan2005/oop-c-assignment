@@ -1,18 +1,15 @@
-#!/usr/bin/env python3
 """
-Test Runner for C++ OOP Assignments
-Performs compile checks and stdin/stdout integration testing.
+Integration Tester module for C++ OOP Assignments
 """
 
 import sys
-import os
 import subprocess
-import argparse
 import difflib
 import time
 from pathlib import Path
+from .compiler import compile_file, PROJECT_ROOT, SRC_DIR
 
-# Colors for terminal output
+# Terminal colors
 GREEN = "\033[92m"
 RED = "\033[91m"
 YELLOW = "\033[93m"
@@ -20,13 +17,7 @@ CYAN = "\033[96m"
 RESET = "\033[0m"
 BOLD = "\033[1m"
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-SRC_DIR = PROJECT_ROOT / "src"
 TESTS_DIR = PROJECT_ROOT / "tests"
-BUILD_DIR = PROJECT_ROOT / "build" / "test_binaries"
-
-CXX = os.environ.get("CXX", "g++")
-CXXFLAGS = ["-Wall", "-Wextra", "-pedantic", "-g", "-O0", "-std=c++17"]
 
 
 def normalize_output(text: str) -> str:
@@ -35,21 +26,27 @@ def normalize_output(text: str) -> str:
     return "\n".join(line.rstrip() for line in lines).strip()
 
 
-def compile_file(cpp_path: Path) -> tuple[bool, Path, str]:
-    """Compile a C++ file to build/test_binaries."""
-    rel_path = cpp_path.relative_to(PROJECT_ROOT)
-    bin_name = rel_path.with_suffix("").as_posix().replace("/", "_")
-    target_bin = BUILD_DIR / bin_name
+def find_test_cases(cpp_path: Path) -> list[tuple[Path, Path]]:
+    """Find input/output file pairs for a given cpp file under tests/."""
+    try:
+        rel_cpp = cpp_path.resolve().relative_to(SRC_DIR)
+    except ValueError:
+        return []
 
-    BUILD_DIR.mkdir(parents=True, exist_ok=True)
+    folder_name = rel_cpp.parent
+    stem = rel_cpp.stem
 
-    cmd = [CXX] + CXXFLAGS + [str(cpp_path), "-o", str(target_bin)]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    test_case_dir = TESTS_DIR / folder_name / stem
+    if not test_case_dir.exists():
+        return []
 
-    if result.returncode != 0:
-        return False, target_bin, result.stderr
+    test_cases = []
+    in_files = sorted(test_case_dir.glob("*.in"))
+    for in_file in in_files:
+        out_file = in_file.with_suffix(".out")
+        test_cases.append((in_file, out_file))
 
-    return True, target_bin, ""
+    return test_cases
 
 
 def run_test_case(target_bin: Path, in_path: Path, out_path: Path, timeout: float) -> tuple[bool, str, float]:
@@ -99,49 +96,25 @@ def run_test_case(target_bin: Path, in_path: Path, out_path: Path, timeout: floa
             diff_msg = "".join(diff)
             return False, f"Output Mismatch:\n{diff_msg}", elapsed
     else:
-        # If no .out file exists, just checking if run was clean
         return True, "(No .out file, run clean)", elapsed
 
 
-def find_test_cases(cpp_path: Path) -> list[tuple[Path, Path]]:
-    """Find input/output file pairs for a given cpp file under tests/."""
-    rel_cpp = cpp_path.relative_to(SRC_DIR)
-    folder_name = rel_cpp.parent
-    stem = rel_cpp.stem
-
-    test_case_dir = TESTS_DIR / folder_name / stem
-    if not test_case_dir.exists():
-        return []
-
-    test_cases = []
-    in_files = sorted(test_case_dir.glob("*.in"))
-    for in_file in in_files:
-        out_file = in_file.with_suffix(".out")
-        test_cases.append((in_file, out_file))
-
-    return test_cases
-
-
-def test_single_cpp(cpp_path: Path, compile_only: bool, timeout: float, verbose: bool) -> tuple[int, int, int]:
+def test_single_cpp(cpp_path: Path, timeout: float = 2.0) -> tuple[int, int, int]:
     """Test a single C++ source file. Returns (passed, failed, total)."""
     rel_path = cpp_path.relative_to(PROJECT_ROOT)
     print(f"\n{BOLD}{CYAN}Testing:{RESET} {rel_path}")
 
-    # Step 1: Compile
-    ok, target_bin, compile_err = compile_file(cpp_path)
+    # Compile
+    ok, target_bin, compile_err = compile_file(cpp_path, silent=True)
     if not ok:
         print(f"  [{RED}BUILD FAIL{RESET}] Compilation Error:\n{compile_err}")
         return 0, 1, 1
 
-    if compile_only:
-        print(f"  [{GREEN}BUILD OK{RESET}] Compiled successfully")
-        return 1, 0, 1
-
-    # Step 2: Find test cases
+    # Find test cases
     test_cases = find_test_cases(cpp_path)
-
     if not test_cases:
-        print(f"  [{YELLOW}NO TESTS{RESET}] Build passed (No test cases found in tests/{cpp_path.relative_to(SRC_DIR).with_suffix('')})")
+        rel_test_folder = cpp_path.relative_to(SRC_DIR).with_suffix("")
+        print(f"  [{YELLOW}NO TESTS{RESET}] Build passed (No test cases found in tests/{rel_test_folder})")
         return 1, 0, 1
 
     passed_count = 0
@@ -162,44 +135,35 @@ def test_single_cpp(cpp_path: Path, compile_only: bool, timeout: float, verbose:
     return passed_count, failed_count, len(test_cases)
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Integration Test Runner for C++ Assignments")
-    parser.add_argument("--file", "-f", type=str, help="Specific C++ file to test")
-    parser.add_argument("--dir", "-d", type=str, help="Directory inside src/ to test")
-    parser.add_argument("--compile-only", "-c", action="store_true", help="Only verify compilation for files")
-    parser.add_argument("--timeout", "-t", type=float, default=2.0, help="Execution timeout per test in seconds")
-    parser.add_argument("--verbose", "-v", action="store_true", help="Show verbose diff output")
-
-    args = parser.parse_args()
-
+def run_tests(file_path: str = None, dir_path: str = None, timeout: float = 2.0) -> bool:
+    """Run tests for a file, a directory, or all files under src/."""
     cpp_files = []
 
-    if args.file:
-        file_path = Path(args.file).resolve()
-        if not file_path.exists():
-            # try relative to src
-            file_path = SRC_DIR / args.file
-        if not file_path.exists():
-            print(f"{RED}Error: File {args.file} not found.{RESET}")
-            sys.exit(1)
-        cpp_files.append(file_path)
-    elif args.dir:
-        dir_path = Path(args.dir).resolve()
-        if not dir_path.exists():
-            dir_path = SRC_DIR / args.dir
-        if not dir_path.exists():
-            print(f"{RED}Error: Directory {args.dir} not found.{RESET}")
-            sys.exit(1)
-        cpp_files = sorted(dir_path.rglob("*.cpp"))
+    if file_path:
+        p = Path(file_path).resolve()
+        if not p.exists():
+            p = SRC_DIR / file_path
+        if not p.exists():
+            print(f"{RED}Lỗi: Không tìm thấy file {file_path}{RESET}")
+            return False
+        cpp_files.append(p)
+    elif dir_path:
+        d = Path(dir_path).resolve()
+        if not d.exists():
+            d = SRC_DIR / dir_path
+        if not d.exists():
+            print(f"{RED}Lỗi: Không tìm thấy thư mục {dir_path}{RESET}")
+            return False
+        cpp_files = sorted(d.rglob("*.cpp"))
     else:
         cpp_files = sorted(SRC_DIR.rglob("*.cpp"))
 
     if not cpp_files:
-        print(f"{YELLOW}No C++ files found to test.{RESET}")
-        sys.exit(0)
+        print(f"{YELLOW}Không tìm thấy file C++ nào để kiểm thử.{RESET}")
+        return True
 
-    print(f"{BOLD}=== OOP C++ Assignment Test Runner ==={RESET}")
-    print(f"Found {len(cpp_files)} C++ source file(s).\n")
+    print(f"{BOLD}=== OOP C++ Assignment Integration Test Runner ==={RESET}")
+    print(f"Tìm thấy {len(cpp_files)} file C++.\n")
 
     total_passed = 0
     total_failed = 0
@@ -208,7 +172,7 @@ def main():
     start_total = time.time()
 
     for cpp_file in cpp_files:
-        p, f, c = test_single_cpp(cpp_file, args.compile_only, args.timeout, args.verbose)
+        p, f, c = test_single_cpp(cpp_file, timeout)
         total_passed += p
         total_failed += f
         total_cases += c
@@ -222,10 +186,4 @@ def main():
     print(f"Failed             : {RED if total_failed > 0 else GREEN}{total_failed}{RESET}")
     print(f"Total Time         : {elapsed_total:.2f}s\n")
 
-    if total_failed > 0:
-        sys.exit(1)
-    sys.exit(0)
-
-
-if __name__ == "__main__":
-    main()
+    return total_failed == 0

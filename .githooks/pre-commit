@@ -5,10 +5,7 @@ cd "$REPO_DIR"
 
 echo "=== [Pre-commit Hook] ==="
 
-# Define path to sync_todo.py
-SYNC_SCRIPT="$REPO_DIR/scripts/sync_todo.py"
-
-"$SYNC_SCRIPT"
+python3 "$REPO_DIR/scripts/cli.py" sync
 
 if [ $? -ne 0 ]; then
     echo "Sync failed. Commit aborted."
