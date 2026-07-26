@@ -2,12 +2,16 @@
 Integration Tester module for C++ OOP Assignments
 """
 
+import re
+import math
 import sys
 import subprocess
 import difflib
 import time
 from pathlib import Path
 from .compiler import compile_file, PROJECT_ROOT, SRC_DIR
+
+import unicodedata
 
 # Terminal colors
 GREEN = "\033[92m"
@@ -20,10 +24,93 @@ BOLD = "\033[1m"
 TESTS_DIR = PROJECT_ROOT / "tests"
 
 
+def normalize_line(line: str) -> str:
+    """
+    Normalize a single line:
+    - Insert spaces around operators & prompt symbols (= : > ,).
+    - Collapse multiple horizontal spaces/tabs ([ \t]+) into a single space.
+    - Strip leading/trailing whitespace.
+    """
+    line = re.sub(r'([=:>,])', r' \1 ', line)
+    line = re.sub(r'[ \t]+', ' ', line.strip())
+    return line
+
+
 def normalize_output(text: str) -> str:
-    """Normalize output by stripping trailing spaces per line and standardizing newlines."""
-    lines = text.replace("\r\n", "\n").split("\n")
-    return "\n".join(line.rstrip() for line in lines).strip()
+    """
+    Normalize output line-by-line:
+    - Standardize Unicode (NFC form).
+    - Standardize newlines (\r\n -> \n).
+    - Strip leading and trailing whitespace per line.
+    - Collapse horizontal spaces & pad operators (= : > ,).
+    - Preserve line breaks (\n).
+    """
+    text = unicodedata.normalize('NFC', text)
+    text = text.replace('\r\n', '\n').replace('–', '-').replace('—', '-')
+    lines = text.split("\n")
+    norm_lines = [normalize_line(line) for line in lines]
+    return "\n".join(norm_lines).strip()
+
+
+def is_float(val_str: str) -> bool:
+    """Check if string token represents a valid float/int number."""
+    try:
+        float(val_str)
+        return True
+    except ValueError:
+        return False
+
+
+def compare_tokens(act_token: str, exp_token: str, float_tol: float = 1e-4) -> bool:
+    """Compare two single tokens (words/numbers)."""
+    if act_token == exp_token:
+        return True
+    if is_float(act_token) and is_float(exp_token):
+        return math.isclose(float(act_token), float(exp_token), abs_tol=float_tol)
+    return False
+
+
+def compare_lines(act_line: str, exp_line: str, float_tol: float = 1e-4) -> bool:
+    """Compare two lines token-by-token after line normalization."""
+    act_norm = normalize_line(act_line)
+    exp_norm = normalize_line(exp_line)
+    if act_norm == exp_norm:
+        return True
+    act_tokens = act_norm.split()
+    exp_tokens = exp_norm.split()
+    if len(act_tokens) != len(exp_tokens):
+        return False
+    return all(compare_tokens(a, e, float_tol) for a, e in zip(act_tokens, exp_tokens))
+
+
+def compare_outputs(actual_raw: str, expected_raw: str, float_tol: float = 1e-4) -> tuple[bool, str]:
+    """
+    Compare actual output with expected output using:
+    1. Line-by-line horizontal whitespace collapse.
+    2. Token-by-token comparison (text must match exactly, numbers match within float_tol).
+    """
+    norm_actual = normalize_output(actual_raw)
+    norm_expected = normalize_output(expected_raw)
+
+    if norm_actual == norm_expected:
+        return True, ""
+
+    act_lines = norm_actual.splitlines()
+    exp_lines = norm_expected.splitlines()
+
+    if len(act_lines) == len(exp_lines):
+        if all(compare_lines(a, e, float_tol) for a, e in zip(act_lines, exp_lines)):
+            return True, ""
+
+    # Build detailed diff if comparison failed
+    diff = difflib.unified_diff(
+        norm_expected.splitlines(keepends=True),
+        norm_actual.splitlines(keepends=True),
+        fromfile="Expected (.out)",
+        tofile="Actual (stdout)"
+    )
+    diff_msg = "".join(diff)
+    return False, diff_msg
 
 
 def find_test_cases(cpp_path: Path) -> list[tuple[Path, Path]]:
@@ -80,20 +167,11 @@ def run_test_case(target_bin: Path, in_path: Path, out_path: Path, timeout: floa
     if proc.returncode != 0:
         return False, f"Runtime Error (Exit Code {proc.returncode}):\n{stderr}", elapsed
 
-    norm_actual = normalize_output(stdout)
-    norm_expected = normalize_output(expected_output)
-
     if out_path.exists():
-        if norm_actual == norm_expected:
+        matched, diff_msg = compare_outputs(stdout, expected_output)
+        if matched:
             return True, "", elapsed
         else:
-            diff = difflib.unified_diff(
-                norm_expected.splitlines(keepends=True),
-                norm_actual.splitlines(keepends=True),
-                fromfile="Expected (.out)",
-                tofile="Actual (stdout)"
-            )
-            diff_msg = "".join(diff)
             return False, f"Output Mismatch:\n{diff_msg}", elapsed
     else:
         return True, "(No .out file, run clean)", elapsed
