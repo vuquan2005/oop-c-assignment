@@ -29,8 +29,14 @@ def setup_git_hooks():
     if pre_commit_hook.exists():
         try:
             os.chmod(pre_commit_hook, 0o755)
-            subprocess.run(["git", "config", "core.hooksPath", ".githooks"], cwd=PROJECT_ROOT, check=True)
-            print(f"  - [{GREEN}OK{RESET}] Đã kích hoạt Git pre-commit hook trong .githooks")
+            subprocess.run(
+                ["git", "config", "core.hooksPath", ".githooks"],
+                cwd=PROJECT_ROOT,
+                check=True,
+            )
+            print(
+                f"  - [{GREEN}OK{RESET}] Đã kích hoạt Git pre-commit hook trong .githooks"
+            )
         except Exception as e:
             print(f"  - [{YELLOW}WARN{RESET}] Không thể cấu hình git hooks: {e}")
 
@@ -52,7 +58,9 @@ def setup_environment() -> bool:
             print(f"  - [{GREEN}OK{RESET}] Trình biên dịch C++: g++")
     else:
         print(f"  - [{RED}MISSING{RESET}] Cảnh báo: `g++` chưa được cài đặt!")
-        print(f"    Vui lòng cài đặt build toolchain (Ubuntu: `sudo apt install build-essential`, Fedora: `sudo dnf install gcc-c++`)")
+        print(
+            f"    Vui lòng cài đặt build toolchain (Ubuntu: `sudo apt install build-essential`, Fedora: `sudo dnf install gcc-c++`)"
+        )
 
     # 3. Check make
     if check_command("make"):

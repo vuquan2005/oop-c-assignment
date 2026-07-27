@@ -32,13 +32,25 @@ BOLD = "\033[1m"
 def print_help():
     print(f"{BOLD}{GREEN}=== C++ OOP Homework Workspace CLI ==={RESET}")
     print("Các lệnh hỗ trợ qua Makefile hoặc CLI:")
-    print("  make setup                          - Khởi tạo môi trường lập trình & thiết lập Git hooks")
-    print("  make new                            - Khởi tạo thư mục và file bài tập C++ mới")
-    print("  make run FILE=path/to/file.cpp      - Biên dịch và chạy tương tác file C++")
-    print("  make build FILE=path/to/file.cpp    - Chỉ biên dịch file C++ vào thư mục build")
-    print("  make build-all                      - Kiểm tra biên dịch tất cả file C++ trong src/")
+    print(
+        "  make setup                          - Khởi tạo môi trường lập trình & thiết lập Git hooks"
+    )
+    print(
+        "  make new                            - Khởi tạo thư mục và file bài tập C++ mới"
+    )
+    print(
+        "  make run FILE=path/to/file.cpp      - Biên dịch và chạy tương tác file C++"
+    )
+    print(
+        "  make build FILE=path/to/file.cpp    - Chỉ biên dịch file C++ vào thư mục build"
+    )
+    print(
+        "  make build-all                      - Kiểm tra biên dịch tất cả file C++ trong src/"
+    )
     print("  make test [FILE=...] [DIR=...]      - Chạy Integration Test Stdin/Stdout")
-    print("  make sync                           - Đồng bộ trạng thái bài tập sang TODO.md và README.md")
+    print(
+        "  make sync                           - Đồng bộ trạng thái bài tập sang TODO.md và README.md"
+    )
     print("  make clean                          - Xóa thư mục build và các file tạm\n")
     print("Ví dụ:")
     print("  make run FILE=src/buoi1/buoi1_1.cpp")
@@ -50,7 +62,9 @@ def clean_build():
     """Clean build directory and temporary files."""
     if BUILD_DIR.exists():
         shutil.rmtree(BUILD_DIR)
-        print(f"  - [{GREEN}CLEAN{RESET}] Đã xóa thư mục {BUILD_DIR.relative_to(PROJECT_ROOT)}")
+        print(
+            f"  - [{GREEN}CLEAN{RESET}] Đã xóa thư mục {BUILD_DIR.relative_to(PROJECT_ROOT)}"
+        )
 
     # Clean temporary files in project root
     for pattern in ["*.dat", "*.TXT", "*.txt", "*.tmp"]:
@@ -71,14 +85,18 @@ def optional_int(value):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="OOP C++ Assignment CLI Dispatcher", add_help=False)
+    parser = argparse.ArgumentParser(
+        description="OOP C++ Assignment CLI Dispatcher", add_help=False
+    )
     parser.add_argument("command", nargs="?", default="help", help="Action to perform")
     parser.add_argument("--file", "-f", type=str, help="Target C++ file")
     parser.add_argument("--dir", "-d", type=str, help="Target directory inside src/")
     parser.add_argument("--folder", type=str, help="Folder name for new exercise")
     parser.add_argument("--num", type=optional_int, help="Quantity for new exercise")
     parser.add_argument("--author", type=str, help="Author name")
-    parser.add_argument("--timeout", type=float, default=2.0, help="Test timeout in seconds")
+    parser.add_argument(
+        "--timeout", type=float, default=2.0, help="Test timeout in seconds"
+    )
 
     args, unknown = parser.parse_known_args()
     cmd = args.command.lower()
@@ -95,7 +113,9 @@ def main():
         sys.exit(0 if ok else 1)
     elif cmd == "build":
         if not args.file:
-            print(f"{RED}Lỗi: Bạn cần chỉ định đường dẫn file bằng FILE=... (Ví dụ: make build FILE=src/buoi1/buoi1_1.cpp){RESET}")
+            print(
+                f"{RED}Lỗi: Bạn cần chỉ định đường dẫn file bằng FILE=... (Ví dụ: make build FILE=src/buoi1/buoi1_1.cpp){RESET}"
+            )
             sys.exit(1)
         ok, bin_path, err = compile_file(Path(args.file))
         sys.exit(0 if ok else 1)
@@ -104,7 +124,9 @@ def main():
         sys.exit(0 if ok else 1)
     elif cmd == "run":
         if not args.file:
-            print(f"{RED}Lỗi: Bạn cần chỉ định đường dẫn file bằng FILE=... (Ví dụ: make run FILE=src/buoi1/buoi1_1.cpp){RESET}")
+            print(
+                f"{RED}Lỗi: Bạn cần chỉ định đường dẫn file bằng FILE=... (Ví dụ: make run FILE=src/buoi1/buoi1_1.cpp){RESET}"
+            )
             sys.exit(1)
         ok = run_file(args.file)
         sys.exit(0 if ok else 1)

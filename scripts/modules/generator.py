@@ -25,7 +25,9 @@ def get_git_author() -> str:
     if author:
         return author
     try:
-        res = subprocess.run(["git", "config", "user.name"], capture_output=True, text=True)
+        res = subprocess.run(
+            ["git", "config", "user.name"], capture_output=True, text=True
+        )
         if res.returncode == 0 and res.stdout.strip():
             return res.stdout.strip()
     except Exception:
@@ -44,12 +46,16 @@ def get_display_name(folder_name: str) -> str:
     return folder_name.capitalize()
 
 
-def create_new_exercise(folder: str = None, num: int = None, author: str = None) -> bool:
+def create_new_exercise(
+    folder: str = None, num: int = None, author: str = None
+) -> bool:
     """Interactively or programmatically generate a new exercise directory and template files."""
     if not folder:
         print(f"{BLUE}=== TẠO BÀI TẬP C++ MỚI ==={RESET}")
         try:
-            folder = input("Nhập tên thư mục bài tập mới (Ví dụ: buoi6, lab6): ").strip()
+            folder = input(
+                "Nhập tên thư mục bài tập mới (Ví dụ: buoi6, lab6): "
+            ).strip()
         except (EOFError, KeyboardInterrupt):
             print("\nĐã hủy.")
             return False
@@ -128,5 +134,7 @@ int main() {{
             created_count += 1
 
     print(f"\n{GREEN}=== HOÀN THÀNH ==={RESET}")
-    print(f"Thành công: Đã tạo {GREEN}{created_count}{RESET} file mới, bỏ qua {YELLOW}{skipped_count}{RESET} file đã có.\n")
+    print(
+        f"Thành công: Đã tạo {GREEN}{created_count}{RESET} file mới, bỏ qua {YELLOW}{skipped_count}{RESET} file đã có.\n"
+    )
     return True

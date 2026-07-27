@@ -65,7 +65,9 @@ def compile_file(cpp_path: Path, silent: bool = False) -> tuple[bool, Path, str]
 def compile_all() -> tuple[bool, int, int]:
     """Compile all C++ files under src/ to verify zero build errors."""
     cpp_files = sorted(SRC_DIR.rglob("*.cpp"))
-    print(f"{BOLD}=== Kiểm tra biên dịch tất cả bài tập ({len(cpp_files)} files) ==={RESET}\n")
+    print(
+        f"{BOLD}=== Kiểm tra biên dịch tất cả bài tập ({len(cpp_files)} files) ==={RESET}\n"
+    )
 
     passed = 0
     failed = 0

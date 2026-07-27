@@ -31,8 +31,8 @@ def normalize_line(line: str) -> str:
     - Collapse multiple horizontal spaces/tabs ([ \t]+) into a single space.
     - Strip leading/trailing whitespace.
     """
-    line = re.sub(r'([=:>,])', r' \1 ', line)
-    line = re.sub(r'[ \t]+', ' ', line.strip())
+    line = re.sub(r"([=:>,])", r" \1 ", line)
+    line = re.sub(r"[ \t]+", " ", line.strip())
     return line
 
 
@@ -45,8 +45,8 @@ def normalize_output(text: str) -> str:
     - Collapse horizontal spaces & pad operators (= : > ,).
     - Preserve line breaks (\n).
     """
-    text = unicodedata.normalize('NFC', text)
-    text = text.replace('\r\n', '\n').replace('–', '-').replace('—', '-')
+    text = unicodedata.normalize("NFC", text)
+    text = text.replace("\r\n", "\n").replace("–", "-").replace("—", "-")
     lines = text.split("\n")
     norm_lines = [normalize_line(line) for line in lines]
     return "\n".join(norm_lines).strip()
@@ -83,7 +83,9 @@ def compare_lines(act_line: str, exp_line: str, float_tol: float = 1e-4) -> bool
     return all(compare_tokens(a, e, float_tol) for a, e in zip(act_tokens, exp_tokens))
 
 
-def compare_outputs(actual_raw: str, expected_raw: str, float_tol: float = 1e-4) -> tuple[bool, str]:
+def compare_outputs(
+    actual_raw: str, expected_raw: str, float_tol: float = 1e-4
+) -> tuple[bool, str]:
     """
     Compare actual output with expected output using:
     1. Line-by-line horizontal whitespace collapse.
@@ -107,7 +109,7 @@ def compare_outputs(actual_raw: str, expected_raw: str, float_tol: float = 1e-4)
         norm_expected.splitlines(keepends=True),
         norm_actual.splitlines(keepends=True),
         fromfile="Expected (.out)",
-        tofile="Actual (stdout)"
+        tofile="Actual (stdout)",
     )
     diff_msg = "".join(diff)
     return False, diff_msg
@@ -136,7 +138,9 @@ def find_test_cases(cpp_path: Path) -> list[tuple[Path, Path]]:
     return test_cases
 
 
-def run_test_case(target_bin: Path, in_path: Path, out_path: Path, timeout: float) -> tuple[bool, str, float]:
+def run_test_case(
+    target_bin: Path, in_path: Path, out_path: Path, timeout: float
+) -> tuple[bool, str, float]:
     """Run a single test case using stdin redirection."""
     with open(in_path, "r", encoding="utf-8") as f_in:
         input_data = f_in.read()
@@ -153,7 +157,7 @@ def run_test_case(target_bin: Path, in_path: Path, out_path: Path, timeout: floa
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            text=True
+            text=True,
         )
         stdout, stderr = proc.communicate(input=input_data, timeout=timeout)
         elapsed = time.time() - start_time
@@ -192,7 +196,9 @@ def test_single_cpp(cpp_path: Path, timeout: float = 2.0) -> tuple[int, int, int
     test_cases = find_test_cases(cpp_path)
     if not test_cases:
         rel_test_folder = cpp_path.relative_to(SRC_DIR).with_suffix("")
-        print(f"  [{YELLOW}NO TESTS{RESET}] Build passed (No test cases found in tests/{rel_test_folder})")
+        print(
+            f"  [{YELLOW}NO TESTS{RESET}] Build passed (No test cases found in tests/{rel_test_folder})"
+        )
         return 1, 0, 1
 
     passed_count = 0
@@ -213,7 +219,9 @@ def test_single_cpp(cpp_path: Path, timeout: float = 2.0) -> tuple[int, int, int
     return passed_count, failed_count, len(test_cases)
 
 
-def run_tests(file_path: str = None, dir_path: str = None, timeout: float = 2.0) -> bool:
+def run_tests(
+    file_path: str = None, dir_path: str = None, timeout: float = 2.0
+) -> bool:
     """Run tests for a file, a directory, or all files under src/."""
     cpp_files = []
 
@@ -261,7 +269,9 @@ def run_tests(file_path: str = None, dir_path: str = None, timeout: float = 2.0)
     print(f"Total Files Tested : {len(cpp_files)}")
     print(f"Total Test Cases   : {total_cases}")
     print(f"Passed             : {GREEN}{total_passed}{RESET}")
-    print(f"Failed             : {RED if total_failed > 0 else GREEN}{total_failed}{RESET}")
+    print(
+        f"Failed             : {RED if total_failed > 0 else GREEN}{total_failed}{RESET}"
+    )
     print(f"Total Time         : {elapsed_total:.2f}s\n")
 
     return total_failed == 0

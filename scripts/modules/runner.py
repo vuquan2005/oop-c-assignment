@@ -39,7 +39,9 @@ def find_matching_cpp_file(target: str) -> Path | None:
     found = list(SRC_DIR.rglob(f"*{target}*.cpp"))
 
     if not found:
-        print(f"{RED}Lỗi: Không tìm thấy file nào khớp với '{target}' trong thư mục src/.{RESET}")
+        print(
+            f"{RED}Lỗi: Không tìm thấy file nào khớp với '{target}' trong thư mục src/.{RESET}"
+        )
         return None
     elif len(found) == 1:
         print(f"{GREEN}Đã tìm thấy file:{RESET} {found[0].relative_to(PROJECT_ROOT)}")
