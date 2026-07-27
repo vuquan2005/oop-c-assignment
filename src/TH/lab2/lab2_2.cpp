@@ -1,7 +1,11 @@
 /**
  * @file lab2_2.cpp
  * @brief Hàng
- * @note [Ghi chú]
+ * @note
+ * Cài đặt lớp theo sơ đồ quan hệ 1-1:
+ *  - NSX: Mansx, Tennsx, Dcnsx. void NHAP(), void XUAT().
+ *  - HANG: Mahang, Tenhang, NSX x. void NHAP(), void XUAT().
+ *  Cài đặt hàm main nhập vào một mặt hàng a. In thông tin của mặt hàng a ra màn hình.
  *
  * @author VuQuan
  * @date 21-07-2026

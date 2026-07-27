@@ -1,7 +1,11 @@
 /**
  * @file lab2_1.cpp
  * @brief Nhân sự
- * @note [Ghi chú]
+ * @note
+ * Cài đặt các lớp theo sơ đồ:
+ *  - DATE: D(ngày), M(tháng), Y(năm). void NHAP(), void XUAT().
+ *  - NHANSU: Manhansu, Hoten, DATE NS. void NHAP(), void XUAT().
+ *  Cài đặt hàm main nhập vào một nhân sự x, in thông tin của nhân sự ra màn hình.
  *
  * @author VuQuan
  * @date 21-07-2026

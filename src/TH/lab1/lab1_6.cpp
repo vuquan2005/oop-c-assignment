@@ -1,7 +1,8 @@
 /**
  * @file lab1_6.cpp
  * @brief Mảng số thực
- * @note Nhập số lượng phần tử và tìm giá trị nhỏ nhất, lớn nhất
+ * @note
+ * Sinh viên tự thiết kế lớp, các thuộc tính, các phương thức cần thiết để cho phép trong chương trình chính, nhập vào một mảng gồm n số thực, tìm và in ra phần tử lớn nhất và phần tử nhỏ nhất của mảng. In mảng ra màn hình.
  *
  * @author VuQuan
  * @date 17-07-2026

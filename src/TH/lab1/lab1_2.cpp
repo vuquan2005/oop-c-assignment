@@ -2,6 +2,11 @@
  * @file lab1_2.cpp
  * @brief Hình chữ nhật
  * @note
+ * Cài đặt lớp Hình chữ nhật bao gồm hai thuộc tính Dài, Rộng và các phương thức:
+ *  - NHAP: nhập chiều dài và chiều rộng.
+ *  - VE: vẽ hình chữ nhật lên màn hình bằng cách sử dụng ký tự * với chiều dài, chiều rộng vốn có của nó.
+ *  - DIENTICH: trả về diện tích hình chữ nhật.
+ *  - CHUVI: trả về chu vi hình chữ nhật.
  *
  * @author VuQuan
  * @date 17-07-2026

@@ -1,7 +1,11 @@
 /**
  * @file lab1_3.cpp
  * @brief Hàng hóa
- * @note Nhập số lượng hàng hóa và xuất định dạng
+ * @note
+ * Cài đặt lớp Hàng Hóa với các thuộc tính: Mã hàng, Tên hàng, Đơn giá, Số lượng và các phương thức:
+ *  - NHAP: nhập thông tin của mặt hàng.
+ *  - XUAT: xuất thông tin của mặt hàng lên màn hình (dữ liệu xuất trên 1 dòng) kèm theo Thành tiền.
+ *  Viết hàm main nhập vào một danh sách gồm n mặt hàng. In danh sách các mặt hàng vừa nhập ra màn hình.
  *
  * @author VuQuan
  * @date 17-07-2026

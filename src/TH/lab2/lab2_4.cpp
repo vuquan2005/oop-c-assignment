@@ -1,7 +1,12 @@
 /**
  * @file lab2_4.cpp
  * @brief Phòng máy
- * @note [Ghi chú]
+ * @note
+ * Cài đặt lớp Phòng máy với mỗi phòng gồm n máy tính và một người quản lý như sơ đồ sau:
+ *  - QUANLY: Maql, Hoten. void NHAP(), void XUAT().
+ *  - MAY: Mamay, Kieumay, Tinhtrang. void NHAP(), void XUAT().
+ *  - PHONGMAY: Maphong, Tenphong, Dientich, QUANLY x, MAY *y, int n. void NHAP(), void XUAT().
+ *  Cài đặt hàm main nhập vào thông tin của 1 phòng máy. In toàn bộ thông tin của phòng máy ra màn hình.
  *
  * @author VuQuan
  * @date 21-07-2026

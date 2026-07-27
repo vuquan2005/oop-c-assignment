@@ -1,7 +1,11 @@
 /**
  * @file lab2_3.cpp
  * @brief Phiếu-Hàng
- * @note [Ghi chú]
+ * @note
+ * Cài đặt lớp theo sơ đồ quan hệ 1-n:
+ *  - HANG: Mahang, Tenhang, Dongia. void NHAP(), void XUAT().
+ *  - PHIEU: Maphieu, HANG x[], int n. void NHAP(), void XUAT().
+ *  Trong đó n là số mặt hàng trong phiếu. Viết hàm main nhập vào một phiếu gồm n mặt hàng. In ra thông tin của phiếu.
  *
  * @author VuQuan
  * @date 21-07-2026

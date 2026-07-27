@@ -1,7 +1,11 @@
 /**
  * @file lab1_4.cpp
  * @brief Sách
- * @note Nhập số lượng sách và xuất định dạng
+ * @note
+ * Cài đặt lớp Sách bao gồm các thuộc tính: Mã sách, Tên sách, Nhà xuất bản, Số trang, Giá tiền và các phương thức:
+ *  - NHAP: nhập vào các thông tin của sách.
+ *  - XUAT: xuất thông tin của sách ra màn hình (trên 1 dòng).
+ *  Viết hàm main nhập vào một danh sách gồm n cuốn sách. In danh sách ra màn hình.
  *
  * @author VuQuan
  * @date 17-07-2026

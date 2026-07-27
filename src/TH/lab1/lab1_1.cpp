@@ -2,6 +2,10 @@
  * @file lab1_1.cpp
  * @brief Sinh viên
  * @note
+ * Cài đặt lớp SINHVIEN gồm các thuộc tính: Mã Sinh Viên, Họ và Tên, Tuổi, Điểm và các phương thức:
+ *  - NHAP: nhập toàn bộ các thông tin cho sinh viên.
+ *  - XUAT: xuất toàn bộ thông tin của sinh viên ra màn hình.
+ *  Cài đặt hàm main khai báo hai sinh viên a, b. Sử dụng các phương thức của hai sinh viên để nhập vào thông tin của sinh viên a, b; xuất thông tin của hai sinh viên ra màn hình.
  *
  * @author VuQuan
  * @date 17-07-2026
