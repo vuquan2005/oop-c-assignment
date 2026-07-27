@@ -34,7 +34,7 @@ setup:
 	@$(PYTHON) $(CLI) setup
 
 new:
-	@$(PYTHON) $(CLI) new --folder "$(FOLDER_VAL)" --num "$(NUM_VAL)" --author "$(AUTHOR_VAL)"
+	@$(PYTHON) $(CLI) new $(if $(FOLDER_VAL),--folder "$(FOLDER_VAL)") $(if $(NUM_VAL),--num "$(NUM_VAL)") $(if $(AUTHOR_VAL),--author "$(AUTHOR_VAL)")
 
 run:
 	@$(PYTHON) $(CLI) run --file "$(FILE)"

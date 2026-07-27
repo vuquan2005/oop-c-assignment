@@ -61,13 +61,22 @@ def clean_build():
     print(f"{GREEN}Đã dọn dẹp thư mục build và các file tạm.{RESET}")
 
 
+def optional_int(value):
+    if value is None or str(value).strip() == "":
+        return None
+    try:
+        return int(value)
+    except ValueError:
+        raise argparse.ArgumentTypeError(f"Invalid integer value: '{value}'")
+
+
 def main():
     parser = argparse.ArgumentParser(description="OOP C++ Assignment CLI Dispatcher", add_help=False)
     parser.add_argument("command", nargs="?", default="help", help="Action to perform")
     parser.add_argument("--file", "-f", type=str, help="Target C++ file")
     parser.add_argument("--dir", "-d", type=str, help="Target directory inside src/")
     parser.add_argument("--folder", type=str, help="Folder name for new exercise")
-    parser.add_argument("--num", type=int, help="Quantity for new exercise")
+    parser.add_argument("--num", type=optional_int, help="Quantity for new exercise")
     parser.add_argument("--author", type=str, help="Author name")
     parser.add_argument("--timeout", type=float, default=2.0, help="Test timeout in seconds")
 
@@ -80,7 +89,9 @@ def main():
         ok = setup_environment()
         sys.exit(0 if ok else 1)
     elif cmd == "new":
-        ok = create_new_exercise(args.folder, args.num, args.author)
+        folder = args.folder.strip() if args.folder and args.folder.strip() else None
+        author = args.author.strip() if args.author and args.author.strip() else None
+        ok = create_new_exercise(folder, args.num, author)
         sys.exit(0 if ok else 1)
     elif cmd == "build":
         if not args.file:

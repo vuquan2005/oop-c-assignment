@@ -109,6 +109,29 @@ Hãy đánh dấu `[x]` thay vì `[ ]` khi bạn đã hoàn thành bài tập đ
     </blockquote>
 </details>
 
+### 📅 Bài tập [Buổi 4](./src/buoi4)
+
+- [ ] [buoi4_1.cpp](./src/buoi4/buoi4_1.cpp) Sách giáo khoa <details>
+    <summary>📅 27-07-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
+- [ ] [buoi4_2.cpp](./src/buoi4/buoi4_2.cpp) [Mô tả ngắn gọn] <details>
+    <summary>📅 27-07-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
+- [ ] [buoi4_3.cpp](./src/buoi4/buoi4_3.cpp) [Mô tả ngắn gọn] <details>
+    <summary>📅 27-07-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
 ### 📅 Bài tập [TH - Lab 1](./src/TH/lab1)
 
 - [x] [lab1_1.cpp](./src/TH/lab1/lab1_1.cpp) Sinh viên <details>
