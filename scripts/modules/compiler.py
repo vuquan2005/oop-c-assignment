@@ -33,8 +33,10 @@ def get_target_binary_path(cpp_path: Path) -> Path:
     return bin_dir / bin_name
 
 
-def compile_file(cpp_path: Path, silent: bool = False) -> tuple[bool, Path, str]:
-    """Compile a single C++ file into build directory."""
+def compile_file(
+    cpp_path: Path, silent: bool = False, force: bool = False
+) -> tuple[bool, Path, str]:
+    """Compile a single C++ file into build directory (skip if binary is up-to-date)."""
     cpp_path = cpp_path.resolve()
     if not cpp_path.exists():
         return False, Path(""), f"File not found: {cpp_path}"
@@ -44,6 +46,10 @@ def compile_file(cpp_path: Path, silent: bool = False) -> tuple[bool, Path, str]
 
     rel_src = cpp_path.relative_to(PROJECT_ROOT)
     rel_bin = target_bin.relative_to(PROJECT_ROOT)
+
+    # Skip compilation if binary exists and is newer than source file
+    if not force and target_bin.exists() and target_bin.stat().st_mtime >= cpp_path.stat().st_mtime:
+        return True, target_bin, ""
 
     if not silent:
         print(f"{CYAN}Đang biên dịch {rel_src} -> {rel_bin} ...{RESET}")

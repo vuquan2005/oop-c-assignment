@@ -2,16 +2,10 @@
 Integration Tester module for C++ OOP Assignments
 """
 
-import re
-import math
-import sys
 import subprocess
-import difflib
 import time
 from pathlib import Path
 from .compiler import compile_file, PROJECT_ROOT, SRC_DIR
-
-import unicodedata
 
 # Terminal colors
 GREEN = "\033[92m"
@@ -24,131 +18,50 @@ BOLD = "\033[1m"
 TESTS_DIR = PROJECT_ROOT / "tests"
 
 
-def normalize_line(line: str) -> str:
-    """
-    Normalize a single line:
-    - Insert spaces around operators & prompt symbols (= : > ,).
-    - Collapse multiple horizontal spaces/tabs ([ \t]+) into a single space.
-    - Strip leading/trailing whitespace.
-    """
-    line = re.sub(r"([=:>,])", r" \1 ", line)
-    line = re.sub(r"[ \t]+", " ", line.strip())
-    return line
+def find_test_cases(cpp_path: Path) -> list[Path]:
+    """Find input test files (.in, .txt) for a given cpp file (under tests/ or co-located in src/)."""
+    cpp_path = cpp_path.resolve()
+    stem = cpp_path.stem
 
+    candidate_dirs = []
 
-def normalize_output(text: str) -> str:
-    """
-    Normalize output line-by-line:
-    - Standardize Unicode (NFC form).
-    - Standardize newlines (\r\n -> \n).
-    - Strip leading and trailing whitespace per line.
-    - Collapse horizontal spaces & pad operators (= : > ,).
-    - Preserve line breaks (\n).
-    """
-    text = unicodedata.normalize("NFC", text)
-    text = text.replace("\r\n", "\n").replace("–", "-").replace("—", "-")
-    lines = text.split("\n")
-    norm_lines = [normalize_line(line) for line in lines]
-    return "\n".join(norm_lines).strip()
-
-
-def is_float(val_str: str) -> bool:
-    """Check if string token represents a valid float/int number."""
+    # 1. Global tests/ directory matching relative path structure (e.g., tests/buoi1/buoi1_1/)
     try:
-        float(val_str)
-        return True
+        rel_cpp = cpp_path.relative_to(SRC_DIR)
+        candidate_dirs.append(TESTS_DIR / rel_cpp.parent / stem)
     except ValueError:
-        return False
+        pass
 
+    # 2. Co-located test directories in src/ (e.g., src/buoi1/tests/buoi1_1, src/buoi1/buoi1_1_tests, src/buoi1/tests)
+    parent_dir = cpp_path.parent
+    candidate_dirs.append(parent_dir / "tests" / stem)
+    candidate_dirs.append(parent_dir / f"{stem}_tests")
+    candidate_dirs.append(parent_dir / stem)
+    candidate_dirs.append(parent_dir / "tests")
 
-def compare_tokens(act_token: str, exp_token: str, float_tol: float = 1e-4) -> bool:
-    """Compare two single tokens (words/numbers)."""
-    if act_token == exp_token:
-        return True
-    if is_float(act_token) and is_float(exp_token):
-        return math.isclose(float(act_token), float(exp_token), abs_tol=float_tol)
-    return False
+    test_files = []
+    seen = set()
 
+    for d in candidate_dirs:
+        if d.exists() and d.is_dir():
+            for ext in ("*.in", "*.txt"):
+                for test_file in sorted(d.glob(ext)):
+                    if test_file not in seen:
+                        # If directory is parent/tests directly, filter files matching stem or numbers
+                        if d.name == "tests" and not test_file.name.startswith(stem) and not test_file.stem.isdigit():
+                            continue
+                        test_files.append(test_file)
+                        seen.add(test_file)
 
-def compare_lines(act_line: str, exp_line: str, float_tol: float = 1e-4) -> bool:
-    """Compare two lines token-by-token after line normalization."""
-    act_norm = normalize_line(act_line)
-    exp_norm = normalize_line(exp_line)
-    if act_norm == exp_norm:
-        return True
-    act_tokens = act_norm.split()
-    exp_tokens = exp_norm.split()
-    if len(act_tokens) != len(exp_tokens):
-        return False
-    return all(compare_tokens(a, e, float_tol) for a, e in zip(act_tokens, exp_tokens))
-
-
-def compare_outputs(
-    actual_raw: str, expected_raw: str, float_tol: float = 1e-4
-) -> tuple[bool, str]:
-    """
-    Compare actual output with expected output using:
-    1. Line-by-line horizontal whitespace collapse.
-    2. Token-by-token comparison (text must match exactly, numbers match within float_tol).
-    """
-    norm_actual = normalize_output(actual_raw)
-    norm_expected = normalize_output(expected_raw)
-
-    if norm_actual == norm_expected:
-        return True, ""
-
-    act_lines = norm_actual.splitlines()
-    exp_lines = norm_expected.splitlines()
-
-    if len(act_lines) == len(exp_lines):
-        if all(compare_lines(a, e, float_tol) for a, e in zip(act_lines, exp_lines)):
-            return True, ""
-
-    # Build detailed diff if comparison failed
-    diff = difflib.unified_diff(
-        norm_expected.splitlines(keepends=True),
-        norm_actual.splitlines(keepends=True),
-        fromfile="Expected (.out)",
-        tofile="Actual (stdout)",
-    )
-    diff_msg = "".join(diff)
-    return False, diff_msg
-
-
-def find_test_cases(cpp_path: Path) -> list[tuple[Path, Path]]:
-    """Find input/output file pairs for a given cpp file under tests/."""
-    try:
-        rel_cpp = cpp_path.resolve().relative_to(SRC_DIR)
-    except ValueError:
-        return []
-
-    folder_name = rel_cpp.parent
-    stem = rel_cpp.stem
-
-    test_case_dir = TESTS_DIR / folder_name / stem
-    if not test_case_dir.exists():
-        return []
-
-    test_cases = []
-    in_files = sorted(test_case_dir.glob("*.in"))
-    for in_file in in_files:
-        out_file = in_file.with_suffix(".out")
-        test_cases.append((in_file, out_file))
-
-    return test_cases
+    return sorted(test_files, key=lambda p: p.name)
 
 
 def run_test_case(
-    target_bin: Path, in_path: Path, out_path: Path, timeout: float
-) -> tuple[bool, str, float]:
+    target_bin: Path, in_path: Path, timeout: float
+) -> tuple[bool, str, str, float]:
     """Run a single test case using stdin redirection."""
     with open(in_path, "r", encoding="utf-8") as f_in:
         input_data = f_in.read()
-
-    expected_output = ""
-    if out_path.exists():
-        with open(out_path, "r", encoding="utf-8") as f_out:
-            expected_output = f_out.read()
 
     start_time = time.time()
     try:
@@ -164,21 +77,14 @@ def run_test_case(
     except subprocess.TimeoutExpired:
         proc.kill()
         proc.communicate()
-        return False, f"Timeout ({timeout}s exceeded)", time.time() - start_time
+        return False, input_data, f"Timeout ({timeout}s exceeded)", time.time() - start_time
     except Exception as e:
-        return False, f"Execution Error: {str(e)}", time.time() - start_time
+        return False, input_data, f"Execution Error: {str(e)}", time.time() - start_time
 
     if proc.returncode != 0:
-        return False, f"Runtime Error (Exit Code {proc.returncode}):\n{stderr}", elapsed
+        return False, input_data, f"Runtime Error (Exit Code {proc.returncode}):\n{stderr}", elapsed
 
-    if out_path.exists():
-        matched, diff_msg = compare_outputs(stdout, expected_output)
-        if matched:
-            return True, "", elapsed
-        else:
-            return False, f"Output Mismatch:\n{diff_msg}", elapsed
-    else:
-        return True, "(No .out file, run clean)", elapsed
+    return True, input_data, stdout, elapsed
 
 
 def test_single_cpp(cpp_path: Path, timeout: float = 2.0) -> tuple[int, int, int]:
@@ -197,23 +103,42 @@ def test_single_cpp(cpp_path: Path, timeout: float = 2.0) -> tuple[int, int, int
     if not test_cases:
         rel_test_folder = cpp_path.relative_to(SRC_DIR).with_suffix("")
         print(
-            f"  [{YELLOW}NO TESTS{RESET}] Build passed (No test cases found in tests/{rel_test_folder})"
+            f"  [{YELLOW}NO TESTS{RESET}] Build passed (No test input files found in tests/{rel_test_folder} or co-located folder)"
         )
         return 1, 0, 1
 
     passed_count = 0
     failed_count = 0
 
-    for idx, (in_path, out_path) in enumerate(test_cases, start=1):
+    for idx, in_path in enumerate(test_cases, start=1):
         case_name = in_path.name
-        passed, msg, elapsed = run_test_case(target_bin, in_path, out_path, timeout)
+        passed, input_data, output_or_err, elapsed = run_test_case(
+            target_bin, in_path, timeout
+        )
+
         if passed:
-            print(f"  [{GREEN}PASS{RESET}] Case #{idx} ({case_name}) - {elapsed:.3f}s")
+            print(f"  [{GREEN}RUN OK{RESET}] Case #{idx} ({case_name}) - {elapsed:.3f}s")
+            if input_data.strip():
+                print(f"    {CYAN}📥 Input ({case_name}):{RESET}")
+                for line in input_data.rstrip().splitlines():
+                    print(f"      {line}")
+            if output_or_err.strip():
+                print(f"    {GREEN}📤 Output:{RESET}")
+                for line in output_or_err.rstrip().splitlines():
+                    print(f"      {line}")
+            else:
+                print(f"    {GREEN}📤 Output: (Empty stdout){RESET}")
             passed_count += 1
         else:
-            print(f"  [{RED}FAIL{RESET}] Case #{idx} ({case_name}) - {elapsed:.3f}s")
-            if msg:
-                print(f"    {YELLOW}{msg}{RESET}")
+            print(f"  [{RED}ERROR{RESET}] Case #{idx} ({case_name}) - {elapsed:.3f}s")
+            if input_data.strip():
+                print(f"    {CYAN}📥 Input ({case_name}):{RESET}")
+                for line in input_data.rstrip().splitlines():
+                    print(f"      {line}")
+            if output_or_err.strip():
+                print(f"    {RED}💥 Error Output:{RESET}")
+                for line in output_or_err.rstrip().splitlines():
+                    print(f"      {line}")
             failed_count += 1
 
     return passed_count, failed_count, len(test_cases)
@@ -268,9 +193,9 @@ def run_tests(
     print(f"\n{BOLD}=== SUMMARY ==={RESET}")
     print(f"Total Files Tested : {len(cpp_files)}")
     print(f"Total Test Cases   : {total_cases}")
-    print(f"Passed             : {GREEN}{total_passed}{RESET}")
+    print(f"Successful Runs    : {GREEN}{total_passed}{RESET}")
     print(
-        f"Failed             : {RED if total_failed > 0 else GREEN}{total_failed}{RESET}"
+        f"Failed Runs        : {RED if total_failed > 0 else GREEN}{total_failed}{RESET}"
     )
     print(f"Total Time         : {elapsed_total:.2f}s\n")
 

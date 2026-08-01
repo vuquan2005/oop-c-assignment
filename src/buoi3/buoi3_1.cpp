@@ -92,11 +92,11 @@ class DoanhNghiep {
     }
 
     void xuat() const {
-        cout << setw(15) << maDN << setw(30) << tenDN << setw(15);
+        cout << setw(15) << maDN << setw(20) << tenDN << setw(15);
         ngayThanhLap.xuat();
-        cout << setw(15) << diaChi.dienThoai << setw(30) << diaChi.phuong
-             << setw(30) << diaChi.quan << setw(30) << diaChi.thanhPho
-             << setw(30) << giamDoc << setw(15) << doanhThu << endl;
+        cout << setw(15) << diaChi.dienThoai << setw(20) << diaChi.phuong
+             << setw(15) << diaChi.quan << setw(15) << diaChi.thanhPho
+             << setw(15) << giamDoc << setw(15) << doanhThu << endl;
     }
 
     int getMaDN() const {
