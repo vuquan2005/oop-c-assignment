@@ -14,7 +14,6 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 from modules.compiler import compile_file, compile_all, PROJECT_ROOT, BUILD_DIR
-from modules.tester import run_tests
 from modules.runner import run_file
 from modules.generator import create_new_exercise
 from modules.todo_sync import sync_todo
@@ -47,7 +46,6 @@ def print_help():
     print(
         "  make build-all                      - Kiểm tra biên dịch tất cả file C++ trong src/"
     )
-    print("  make test [FILE=...] [DIR=...]      - Chạy Integration Test Stdin/Stdout")
     print(
         "  make sync                           - Đồng bộ trạng thái bài tập sang TODO.md và README.md"
     )
@@ -129,9 +127,6 @@ def main():
             )
             sys.exit(1)
         ok = run_file(args.file)
-        sys.exit(0 if ok else 1)
-    elif cmd == "test":
-        ok = run_tests(args.file, args.dir, args.timeout)
         sys.exit(0 if ok else 1)
     elif cmd == "sync":
         ok = sync_todo()
