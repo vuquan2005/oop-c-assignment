@@ -35,7 +35,7 @@ class Date {
 
 class XeHoi {
   private:
-    string hangSX;
+    char hangSX[20];
     Date namSX;
     int giaBan;
     int soLuong;
@@ -44,7 +44,7 @@ class XeHoi {
     void nhap() {
         cout << "Nhap hang san xuat > ";
         cin.ignore();
-        getline(cin, hangSX);
+        cin.getline(hangSX, 20);
         cout << "Nhap nam san xuat:" << endl;
         namSX.nhap();
         cout << "Nhap gia ban > ";

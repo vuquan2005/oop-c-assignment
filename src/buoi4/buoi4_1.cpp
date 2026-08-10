@@ -9,19 +9,21 @@
  * @status todo
  */
 
+#include <cstring>
 #include <iomanip>
 #include <iostream>
 
 using namespace std;
 
 class BookID {
-  private:
+  protected:
     char tenSach[30];
     char maSach[10];
 
   public:
     void nhap() {
         cout << "Nhap ten sach: ";
+        cin.ignore();
         cin.getline(tenSach, 30);
         cout << "Nhap ma sach: ";
         cin.getline(maSach, 10);
@@ -37,6 +39,7 @@ class TacGia {
     char tenTacGia[30];
     char diaChi[50];
     friend class SachGK;
+    friend void search_kimdong(SachGK *sach, int n);
 };
 
 class NXB {
@@ -44,17 +47,16 @@ class NXB {
     char tenNXB[30];
     char diaChi[50];
     friend class SachGK;
+    friend void search_kimdong(SachGK *sach, int n);
 };
 
-class SachGK {
+class SachGK : bookID {
   private:
-    BookID bookID;
     TacGia tacGia;
     NXB nxb;
 
   public:
     void nhap() {
-        bookID.nhap();
         cout << "Nhap ten tac gia: ";
         cin.getline(tacGia.tenTacGia, 30);
         cout << "Nhap dia chi tac gia: ";
@@ -70,6 +72,11 @@ class SachGK {
         cout << "Dia chi tac gia: " << tacGia.diaChi << endl;
         cout << "Ten NXB: " << nxb.tenNXB << endl;
         cout << "Dia chi NXB: " << nxb.diaChi << endl;
+    }
+    friend void search_kimdong(SachGK *sach, int n) {
+        for (int i = 0; i < n; i++) {
+            if (strcmp(sach[i].tacGia.tenTacGia, "Kim Dong"))
+        }
     }
 };
 

@@ -15,20 +15,20 @@ using namespace std;
 
 class CanBo {
   private:
-    string maCanBo;
-    string hoTen;
-    string ngaySinh;
+    char maCanBo[10];
+    char hoTen[20];
+    char ngaySinh[10];
     int soNgayLamViec;
 
   public:
     void nhap() {
         cout << "Nhap ma can bo > ";
         cin.ignore();
-        getline(cin, maCanBo);
+        cin.getline(maCanBo, 10);
         cout << "Nhap ho ten > ";
-        getline(cin, hoTen);
+        cin.getline(hoTen, 20);
         cout << "Nhap ngay sinh > ";
-        getline(cin, ngaySinh);
+        cin.getline(ngaySinh, 10);
         cout << "Nhap so ngay lam viec trong thang > ";
         cin >> soNgayLamViec;
     }

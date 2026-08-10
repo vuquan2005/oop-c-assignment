@@ -15,19 +15,19 @@ using namespace std;
 
 class HocSinh {
   private:
-    string hoTen;
+    char hoTen[20];
     int ngaySinh;
     int thangSinh;
     int namSinh;
-    string gioiTinh;
+    char gioiTinh[10];
     float diemTB;
-    string xepLoaiDaoDuc;
+    char xepLoaiDaoDuc[15];
 
   public:
     void nhap() {
         cout << "Nhap ho ten hoc sinh > ";
         cin.ignore();
-        getline(cin, hoTen);
+        cin.getline(hoTen, 20);
         cout << "Nhap ngay sinh > ";
         cin >> ngaySinh;
         cout << "Nhap thang sinh > ";
@@ -36,12 +36,12 @@ class HocSinh {
         cin >> namSinh;
         cout << "Nhap gioi tinh > ";
         cin.ignore();
-        getline(cin, gioiTinh);
+        cin.getline(gioiTinh, 10);
         cout << "Nhap diem trung binh > ";
         cin >> diemTB;
         cout << "Nhap xep loai dao duc > ";
         cin.ignore();
-        getline(cin, xepLoaiDaoDuc);
+        cin.getline(xepLoaiDaoDuc, 15);
     }
     void xuat() const {
         cout << "=== Thong tin hoc sinh ===" << endl;
