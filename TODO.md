@@ -132,6 +132,29 @@ Hãy đánh dấu `[x]` thay vì `[ ]` khi bạn đã hoàn thành bài tập đ
     </blockquote>
 </details>
 
+### 📅 Bài tập [Buổi 5](./src/buoi5)
+
+- [ ] [buoi5_1.cpp](./src/buoi5/buoi5_1.cpp) Số phức <details>
+    <summary>📅 12-08-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
+- [ ] [buoi5_2.cpp](./src/buoi5/buoi5_2.cpp) [Mô tả ngắn gọn] <details>
+    <summary>📅 12-08-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
+- [ ] [buoi5_3.cpp](./src/buoi5/buoi5_3.cpp) [Mô tả ngắn gọn] <details>
+    <summary>📅 12-08-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
 ### 📅 Bài tập [TH - Lab 1](./src/TH/lab1)
 
 - [x] [lab1_1.cpp](./src/TH/lab1/lab1_1.cpp) Sinh viên <details>

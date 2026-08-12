@@ -14,10 +14,16 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 from modules.compiler import compile_file, compile_all, PROJECT_ROOT, BUILD_DIR
-from modules.runner import run_file
+from modules.runner import run_file, find_matching_cpp_file
 from modules.generator import create_new_exercise
 from modules.todo_sync import sync_todo
 from modules.setup_env import setup_environment
+from modules.tester import (
+    test_file_quick,
+    test_file_suite,
+    run_all_tests,
+    add_test_case,
+)
 
 # Terminal colors
 GREEN = "\033[92m"
@@ -47,12 +53,19 @@ def print_help():
         "  make build-all                      - Kiểm tra biên dịch tất cả file C++ trong src/"
     )
     print(
+        '  make test FILE=... [IN="10 5 4"]     - Test nhanh bằng input trực tiếp hoặc test case suite'
+    )
+    print(
+        '  make add-test FILE=... IN="..."      - Thêm test case (.in / .out) mới cho bài tập'
+    )
+    print(
         "  make sync                           - Đồng bộ trạng thái bài tập sang TODO.md và README.md"
     )
     print("  make clean                          - Xóa thư mục build và các file tạm\n")
     print("Ví dụ:")
-    print("  make run FILE=src/buoi1/buoi1_1.cpp")
+    print('  make test FILE=src/buoi1/buoi1_1.cpp IN="10 5 4"')
     print("  make test FILE=src/buoi1/buoi1_1.cpp")
+    print("  make run FILE=src/buoi1/buoi1_1.cpp")
     print("  make build-all\n")
 
 
@@ -89,6 +102,16 @@ def main():
     parser.add_argument("command", nargs="?", default="help", help="Action to perform")
     parser.add_argument("--file", "-f", type=str, help="Target C++ file")
     parser.add_argument("--dir", "-d", type=str, help="Target directory inside src/")
+    parser.add_argument(
+        "--in", "-i", dest="in_data", type=str, help="Inline input string for testing"
+    )
+    parser.add_argument(
+        "--out",
+        "-o",
+        dest="out_data",
+        type=str,
+        help="Expected output string for test case",
+    )
     parser.add_argument("--folder", type=str, help="Folder name for new exercise")
     parser.add_argument("--num", type=optional_int, help="Quantity for new exercise")
     parser.add_argument("--author", type=str, help="Author name")
@@ -126,7 +149,36 @@ def main():
                 f"{RED}Lỗi: Bạn cần chỉ định đường dẫn file bằng FILE=... (Ví dụ: make run FILE=src/buoi1/buoi1_1.cpp){RESET}"
             )
             sys.exit(1)
-        ok = run_file(args.file)
+        if args.in_data is not None:
+            cpp_path = find_matching_cpp_file(args.file)
+            if not cpp_path:
+                sys.exit(1)
+            ok = test_file_quick(cpp_path, args.in_data, args.timeout)
+        else:
+            ok = run_file(args.file)
+        sys.exit(0 if ok else 1)
+    elif cmd == "test":
+        if args.file:
+            cpp_path = find_matching_cpp_file(args.file)
+            if not cpp_path:
+                sys.exit(1)
+            if args.in_data is not None:
+                ok = test_file_quick(cpp_path, args.in_data, args.timeout)
+            else:
+                ok = test_file_suite(cpp_path, args.timeout)
+        else:
+            ok = run_all_tests(args.dir, args.timeout)
+        sys.exit(0 if ok else 1)
+    elif cmd == "add-test":
+        if not args.file or args.in_data is None:
+            print(
+                f'{RED}Lỗi: Cần truyền FILE=... và IN="..." (Ví dụ: make add-test FILE=buoi1_1 IN="10 5 4"){RESET}'
+            )
+            sys.exit(1)
+        cpp_path = find_matching_cpp_file(args.file)
+        if not cpp_path:
+            sys.exit(1)
+        ok = add_test_case(cpp_path, args.in_data, args.out_data)
         sys.exit(0 if ok else 1)
     elif cmd == "sync":
         ok = sync_todo()
