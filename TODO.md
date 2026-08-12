@@ -349,6 +349,29 @@ Hãy đánh dấu `[x]` thay vì `[ ]` khi bạn đã hoàn thành bài tập đ
     </blockquote>
 </details>
 
+### 📅 Bài tập [TH - Lab_phieu_giao](./src/TH/lab_phieu_giao)
+
+- [ ] [lab_phieu_giao_1.cpp](./src/TH/lab_phieu_giao/lab_phieu_giao_1.cpp) [Mô tả ngắn gọn] <details>
+    <summary>📅 12-08-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
+- [ ] [lab_phieu_giao_2.cpp](./src/TH/lab_phieu_giao/lab_phieu_giao_2.cpp) [Mô tả ngắn gọn] <details>
+    <summary>📅 12-08-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
+- [ ] [lab_phieu_giao_3.cpp](./src/TH/lab_phieu_giao/lab_phieu_giao_3.cpp) [Mô tả ngắn gọn] <details>
+    <summary>📅 12-08-2026</summary>
+    <blockquote>
+    👤 VuQuan
+    </blockquote>
+</details>
+
 ### 📅 Bài tập [TH - Online1](./src/TH/online1)
 
 - [ ] [online1_1.cpp](./src/TH/online1/online1_1.cpp) Phiếu nhập hàng <details>

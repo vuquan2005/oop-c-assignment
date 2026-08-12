@@ -26,7 +26,11 @@ class ARR {
 
     friend istream &operator>>(istream &in, ARR &arr) {
         cout << "Nhap n: ";
-        in >> arr.n;
+
+        do {
+            in >> arr.n;
+        } while (arr.n < 1 || arr.n > 10000);
+
         arr.value = new float[arr.n];
 
         for (int i = 0; i < arr.n; i++) {
