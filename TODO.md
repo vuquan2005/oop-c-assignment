@@ -411,18 +411,16 @@ Hãy đánh dấu `[x]` thay vì `[ ]` khi bạn đã hoàn thành bài tập đ
 
 ### 📅 Bài tập [TH - Online3](./src/TH/online3)
 
-- [ ] [online3_1.cpp](./src/TH/online3/online3_1.cpp) Mảng 1 chiều Template <details>
+- [ ] [online3_1.cpp](./src/TH/online3/online3_1.cpp) Mảng 1 chiều <details>
     <summary>📅 28-07-2026</summary>
     <blockquote>
-    Cài đặt lớp mảng 1 chiều có sử dụng template để có thể thao tác trên cả mảng số nguyên, mảng số thực. Định nghĩa các phương thức nhập, xuất, tìm max, min, sắp xếp. <br>
     👤 VuQuan
     </blockquote>
 </details>
 
-- [ ] [online3_2.cpp](./src/TH/online3/online3_2.cpp) Đọc ghi tệp tin File I/O <details>
+- [ ] [online3_2.cpp](./src/TH/online3/online3_2.cpp) Tam giac <details>
     <summary>📅 28-07-2026</summary>
     <blockquote>
-    Thực hành đọc ghi dữ liệu ra tệp tin (ifstream, ofstream). <br>
     👤 VuQuan
     </blockquote>
 </details>
